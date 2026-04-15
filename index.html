@@ -118,6 +118,23 @@ button,input,select,textarea { font-family:inherit; font-size:13px; }
 .inline-url:hover { border-color:var(--line2); background:var(--paper2); }
 .inline-url:focus { border-color:var(--blue); background:var(--paper); outline:none; box-shadow:0 0 0 2px rgba(37,99,235,.1); }
 
+/* ── 3탭 상세 패널 ── */
+.sp-rd-tab { flex:1; padding:10px 6px; text-align:center; font-size:11px; font-weight:600; color:var(--ink3); border:none; background:transparent; cursor:pointer; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; }
+.sp-rd-tab:hover { color:var(--ink); background:var(--paper3); }
+.sp-rd-tab.on { color:var(--blue); border-bottom-color:var(--blue); background:var(--paper); }
+.sp-rd-section { padding:14px 18px; border-bottom:1px solid var(--line); }
+.sp-rd-section:last-child { border-bottom:none; }
+.sp-rd-sec-title { font-size:10px; font-weight:700; color:var(--ink4); text-transform:uppercase; letter-spacing:.6px; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+.sp-rd-sec-title::after { content:''; flex:1; height:1px; background:var(--line); }
+.sp-rd-2col { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.sp-rd-field { margin-bottom:8px; }
+.sp-rd-field:last-child { margin-bottom:0; }
+.sp-rd-label { display:block; font-size:10px; font-weight:600; color:var(--ink4); margin-bottom:4px; }
+.sp-rd-input { width:100%; padding:7px 10px; border:1px solid var(--line2); border-radius:7px; background:var(--paper); color:var(--ink); font-size:12px; outline:none; transition:border-color .15s; font-family:inherit; }
+.sp-rd-input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+.sp-rd-select { width:100%; padding:7px 10px; border:1px solid var(--line2); border-radius:7px; background:var(--paper); color:var(--ink); font-size:12px; cursor:pointer; outline:none; }
+.sp-rd-select:focus { border-color:var(--blue); }
+
 .stat-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:16px; }
 .stat-card { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-lg); padding:14px 16px; box-shadow:var(--sh); }
 .stat-label { font-size:10px; font-weight:600; color:var(--ink3); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
@@ -312,61 +329,13 @@ select.fc { cursor:pointer; }
     <button class="btn-p" onclick="openAddPanel()">+ 인플루언서 첫 등록</button>
   </div>
 
-  <!-- 발송 임박 (마감 7일 전 최상단) -->
-  <div id="dash-urgent" style="display:none;margin-bottom:16px;">
-    <div style="background:var(--paper);border:2px solid #FCA5A5;border-radius:12px;overflow:hidden;">
-      <div style="padding:12px 16px;border-bottom:1px solid #FECACA;background:var(--red-l);display:flex;align-items:center;gap:8px;">
-        <span style="font-size:13px;font-weight:700;color:var(--red);">🚨 발송 임박 — 7일 이내</span>
-        <span id="dash-urgent-cnt" style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--red);color:#fff;"></span>
-        <span style="margin-left:auto;font-size:11px;color:var(--red);">마감일 7일 전부터 최상단 표시</span>
-      </div>
-      <div id="dash-urgent-body" style="padding:12px 16px;display:flex;flex-direction:column;gap:6px;"></div>
-    </div>
-  </div>
-
-  <!-- 이번 주 마감 + 포스팅 미완료 (2열 그리드) -->
-  <div id="dash-main-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-
-    <!-- 이번 주 마감 -->
-    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;">
-      <div style="padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper2);display:flex;align-items:center;gap:8px;">
-        <span style="font-size:13px;font-weight:600;">📅 이번 주 마감</span>
-        <span id="dash-week-cnt" style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--amber-l);color:var(--amber);"></span>
-        <span id="dash-week-range" style="margin-left:auto;font-size:11px;color:var(--ink4);"></span>
-      </div>
-      <div id="dash-week-body" style="padding:12px;display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;"></div>
-    </div>
-
-    <!-- 포스팅 미완료 인라인 편집 -->
-    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;">
-      <div style="padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper2);display:flex;align-items:center;gap:8px;">
-        <span style="font-size:13px;font-weight:600;">✍️ 포스팅 미완료</span>
-        <span id="dash-post-cnt" style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--blue-l);color:var(--blue);"></span>
-        <span style="margin-left:auto;font-size:11px;color:var(--ink4);">URL 셀 클릭 → 바로 입력 → Enter 저장</span>
-      </div>
-      <div style="overflow-x:auto;max-height:360px;overflow-y:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:12px;">
-          <thead>
-            <tr>
-              <th style="background:var(--ink);color:#94A3B8;font-size:10px;font-weight:500;padding:8px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;">닉네임</th>
-              <th style="background:var(--ink);color:#94A3B8;font-size:10px;font-weight:500;padding:8px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;">상태</th>
-              <th style="background:var(--ink);color:#94A3B8;font-size:10px;font-weight:500;padding:8px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;">마감일</th>
-              <th style="background:var(--ink);color:#94A3B8;font-size:10px;font-weight:500;padding:8px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;">포스팅 URL</th>
-            </tr>
-          </thead>
-          <tbody id="dash-post-body"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
   <!-- 전체 진행 현황 카드 -->
-  <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+  <div id="dash-cards-wrap" style="background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;">
     <div style="padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper2);display:flex;align-items:center;gap:8px;">
-      <span style="font-size:13px;font-weight:600;">🗂️ 전체 진행 현황</span>
+      <span style="font-size:13px;font-weight:600;">전체 진행 현황</span>
       <span id="dash-all-cnt" style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--purple-l);color:var(--purple);"></span>
     </div>
-    <div id="dash-cards" style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;"></div>
+    <div id="dash-cards" style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;"></div>
   </div>
 </div>
 
@@ -848,177 +817,147 @@ function renderDash() {
   setStatBox('dash-stat-ship',   shipPending, '발송 대기');
 
   // 차수 없음 처리
-  const emptyEl = document.getElementById('dash-empty');
-  const bannerEl = document.getElementById('dash-banner');
-  const mainGrid = document.getElementById('dash-main-grid');
-  const cardsEl  = document.getElementById('dash-cards');
+  const emptyEl    = document.getElementById('dash-empty');
+  const bannerEl   = document.getElementById('dash-banner');
+  const cardsWrap  = document.getElementById('dash-cards-wrap');
   const emptyTitle = document.getElementById('dash-empty-title');
 
   if (!dashCycle || cycleRows.length === 0) {
-    if (emptyEl)   emptyEl.style.display = '';
+    if (emptyEl)   emptyEl.style.display  = '';
     if (bannerEl)  bannerEl.style.display = 'none';
-    if (mainGrid)  mainGrid.style.display = 'none';
-    if (cardsEl)   cardsEl.parentElement.style.display = 'none';
+    if (cardsWrap) cardsWrap.style.display = 'none';
     if (emptyTitle) emptyTitle.textContent = `${year}년 ${month}차 데이터가 없습니다`;
     return;
   }
-  if (emptyEl)  emptyEl.style.display  = 'none';
-  if (bannerEl) bannerEl.style.display = '';
-  if (mainGrid) mainGrid.style.display = '';
-  if (cardsEl)  cardsEl.parentElement.style.display = '';
+  if (emptyEl)   emptyEl.style.display   = 'none';
+  if (bannerEl)  bannerEl.style.display  = '';
+  if (cardsWrap) cardsWrap.style.display = '';
 
-  // 발송 임박 (마감일 7일 이내)
-  const urgentEl   = document.getElementById('dash-urgent');
-  const urgentBody = document.getElementById('dash-urgent-body');
-  const urgentCnt  = document.getElementById('dash-urgent-cnt');
-  const todayMs    = now.setHours(0,0,0,0) && now.getTime() || new Date().setHours(0,0,0,0);
-  const todayDate  = new Date(); todayDate.setHours(0,0,0,0);
+  const todayDate = new Date(); todayDate.setHours(0,0,0,0);
 
-  // 차수 최종 마감일 기준 7일 전 체크
-  const lastDL = lastDeadline ? new Date(lastDeadline) : null;
-  const isUrgentPeriod = lastDL && (lastDL - todayDate) / 86400000 <= 7;
-
-  const shipRows = cycleRows.filter(r => r.sent === 'N' && ['포스팅완료','발송대기'].includes(r.status));
-  if (isUrgentPeriod && shipRows.length > 0) {
-    if (urgentEl) urgentEl.style.display = '';
-    if (urgentCnt) urgentCnt.textContent = shipRows.length + '명';
-    if (urgentBody) urgentBody.innerHTML = shipRows.map(r => {
-      const daysLeft = lastDL ? Math.ceil((lastDL - todayDate) / 86400000) : null;
-      const dLabel = daysLeft === null ? '' : daysLeft <= 0 ? '마감 지남' : `D-${daysLeft}`;
-      const bgColor = daysLeft !== null && daysLeft <= 2 ? 'var(--red-l)' : 'var(--amber-l)';
-      const bdColor = daysLeft !== null && daysLeft <= 2 ? '#FECACA' : '#FDE68A';
-      const dColor  = daysLeft !== null && daysLeft <= 2 ? 'var(--red)' : 'var(--amber)';
-      return `<div class="dash-urgent-row" style="background:${bgColor};border-color:${bdColor};">
-        <span style="font-size:11px;font-weight:700;color:${dColor};min-width:48px;">${dLabel}</span>
-        <strong style="flex:1">${r.nick}</strong>
-        ${sbadge(r.status)}
-        <span style="font-size:11px;color:var(--ink3);">${r.realName ? r.realName + ' · ' + (r.phone||'') : '실명 미입력'}</span>
-        <button class="btn-sm" onclick="openRowDetail(${r.rowIndex})">바로 입력</button>
-      </div>`;
-    }).join('');
-  } else {
-    if (urgentEl) urgentEl.style.display = 'none';
-  }
-
-  // 이번 주 마감 (월~일)
-  const weekStart = new Date(todayDate); weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // 월
-  const weekEnd   = new Date(weekStart); weekEnd.setDate(weekEnd.getDate() + 6); // 일
-  const fmt = d => `${d.getMonth()+1}/${d.getDate()}`;
-  const weekRange = document.getElementById('dash-week-range');
-  if (weekRange) weekRange.textContent = `${fmt(weekStart)} ~ ${fmt(weekEnd)}`;
-
-  const weekRows = cycleRows.filter(r => {
-    if (!r.deadline) return false;
-    const dl = new Date(r.deadline); dl.setHours(0,0,0,0);
-    return dl >= weekStart && dl <= weekEnd;
-  }).sort((a,b) => new Date(a.deadline) - new Date(b.deadline));
-
-  const weekCnt  = document.getElementById('dash-week-cnt');
-  const weekBody = document.getElementById('dash-week-body');
-  if (weekCnt) weekCnt.textContent = weekRows.length + '명';
-  if (weekBody) weekBody.innerHTML = weekRows.length === 0
-    ? '<div style="color:var(--ink4);font-size:12px;padding:12px 0;text-align:center;">이번 주 마감 없음</div>'
-    : weekRows.map(r => {
-        const dl = new Date(r.deadline); dl.setHours(0,0,0,0);
-        const diff = Math.ceil((dl - todayDate) / 86400000);
-        const cls  = diff < 0 ? 'overdue' : diff === 0 ? 'today' : diff <= 3 ? 'soon' : '';
-        const dTag = diff < 0 ? '지남' : diff === 0 ? '오늘' : `D-${diff}`;
-        const dayNames = ['일','월','화','수','목','금','토'];
-        return `<div class="dash-week-card ${cls}" onclick="openRowDetail(${r.rowIndex})">
-          <div class="dash-dl-date">
-            <div class="dd">${dl.getDate()}</div>
-            <div class="dm">${diff===0?'오늘':dayNames[dl.getDay()]}</div>
-          </div>
-          <div style="flex:1;">
-            <div style="font-weight:600;font-size:12px;">${r.nick}</div>
-            <div style="font-size:11px;color:var(--ink3);margin-top:2px;">${r.platform||''} · ${r.status}</div>
-          </div>
-          <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;${diff<0?'background:var(--red-l);color:var(--red)':diff===0?'background:var(--red);color:#fff':diff<=3?'background:var(--amber-l);color:var(--amber)':'background:var(--paper3);color:var(--ink3)'}">${dTag}</span>
-        </div>`;
-      }).join('');
-
-  // 포스팅 미완료 인라인 편집
-  const postRows = cycleRows.filter(r => !r.postUrl && ['가이드발송','진행확정','컨택완료','답변대기'].includes(r.status));
-  const postCnt  = document.getElementById('dash-post-cnt');
-  const postBody = document.getElementById('dash-post-body');
-  if (postCnt) postCnt.textContent = postRows.length + '명';
-  if (postBody) postBody.innerHTML = postRows.length === 0
-    ? '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--ink4);font-size:12px;">포스팅 미완료 없음</td></tr>'
-    : postRows.map(r => {
-        const dl = r.deadline ? new Date(r.deadline) : null;
-        const dlStr = dl ? (() => {
-          dl.setHours(0,0,0,0);
-          const diff = Math.ceil((dl - todayDate) / 86400000);
-          const color = diff < 0 ? 'color:var(--red);font-weight:600' : diff <= 3 ? 'color:var(--amber);font-weight:600' : '';
-          return `<span style="${color}">${r.deadline}${diff===0?' (오늘)':diff<0?' (지남)':''}</span>`;
-        })() : '—';
-        return `<tr style="border-bottom:1px solid var(--line);">
-          <td style="padding:8px 12px;white-space:nowrap;"><strong>${r.nick}</strong></td>
-          <td style="padding:8px 12px;">${sbadge(r.status)}</td>
-          <td style="padding:8px 12px;font-size:11px;">${dlStr}</td>
-          <td style="padding:4px 8px;">
-            <input class="inline-url" placeholder="URL 입력 후 Enter"
-              onkeydown="if(event.key==='Enter'){saveInlineUrl(${r.rowIndex},this.value,this)}"
-              onblur="if(this.value.trim())saveInlineUrl(${r.rowIndex},this.value,this)">
-          </td>
-        </tr>`;
-      }).join('');
-
-  // 전체 진행 현황 카드
-  const allCnt  = document.getElementById('dash-all-cnt');
-  const cards   = document.getElementById('dash-cards');
+  // 전체 진행 현황 카드 (진행 바 + 키워드)
+  const allCnt = document.getElementById('dash-all-cnt');
+  const cards  = document.getElementById('dash-cards');
   if (allCnt) allCnt.textContent = cycleRows.length + '명';
-  if (cards) {
-    const sorted = [...cycleRows].sort((a,b) => {
-      const order = {
-        '가이드발송':0,'포스팅완료':1,'발송대기':2,
-        '진행확정':3,'컨택완료':4,'답변대기':5,
-        '발송완료':6,'거절':7,'블랙리스트':8
-      };
-      return (order[a.status]??9) - (order[b.status]??9);
-    });
-    cards.innerHTML = sorted.map(r => {
-      const stepIdx = STATUS_STEPS.indexOf(r.status);
-      const isDone  = r.sent === 'Y';
-      const dl      = r.deadline ? new Date(r.deadline) : null;
-      if (dl) dl.setHours(0,0,0,0);
-      const dlDiff  = dl ? Math.ceil((dl - todayDate) / 86400000) : null;
-      const isUrgent = dlDiff !== null && dlDiff <= 3 && !isDone;
-      const headCls = isDone ? 'done-head' : isUrgent ? 'urgent-head' : '';
-      const cardCls = isDone ? 'done-card' : isUrgent ? 'urgent-card' : '';
-      return `<div class="dash-tl-card ${cardCls}" onclick="openRowDetail(${r.rowIndex})">
-        <div class="dash-tl-head ${headCls}">
-          ${pbadge(r.platform||'네이버 블로그')}
-          <span class="dash-tl-nick">${r.nick}</span>
-          ${isUrgent ? `<span style="font-size:10px;font-weight:700;color:var(--red);">D-${dlDiff}</span>` : sbadge(r.status)}
-        </div>
-        <div class="dash-tl-steps">
-          ${STATUS_STEPS.map((s,i) => {
-            const dotCls  = i < stepIdx ? 'done' : i === stepIdx ? 'current' : 'pending';
-            const nameCls = i < stepIdx ? '' : i === stepIdx ? 'current' : 'pending';
-            let dateStr = '';
-            if (s === '가이드발송' && r.guideSent) dateStr = r.guideSent;
-            if (s === '포스팅완료' && r.postUrl)   dateStr = r.deadline || '';
-            if (s === '발송완료'   && r.sentDate)  dateStr = r.sentDate;
-            const isDeadlineStep = s === '가이드발송' && r.deadline && i === stepIdx;
-            const dateCls = isDeadlineStep && dlDiff !== null
-              ? (dlDiff < 0 ? 'over' : dlDiff <= 3 ? 'near' : '')
-              : '';
-            const showDate = isDeadlineStep ? (r.deadline||'') : dateStr;
-            return `<div class="dash-tl-step">
-              <div class="dash-tl-dot ${dotCls}">${i < stepIdx ? '✓' : ''}</div>
-              <span class="dash-tl-sname ${nameCls}">${s}</span>
-              ${showDate ? `<span class="dash-tl-sdate ${dateCls}">${showDate}</span>` : ''}
-            </div>`;
-          }).join('')}
-        </div>
-        <div class="dash-tl-foot">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3);">${feeStr(r.confirmFee||r.proposeFee)}</span>
-          <button class="btn-sm" onclick="event.stopPropagation();openRowDetail(${r.rowIndex})">수정</button>
-        </div>
-      </div>`;
+  if (!cards) return;
+
+  const sorted = [...cycleRows].sort((a,b) => {
+    const order = {
+      '발송대기':0,'포스팅완료':1,'가이드발송':2,
+      '진행확정':3,'답변대기':4,'컨택완료':5,
+      '발송완료':6,'거절':7,'블랙리스트':8
+    };
+    return (order[a.status]??9) - (order[b.status]??9);
+  });
+
+  cards.innerHTML = sorted.map(r => {
+    const stepIdx  = STATUS_STEPS.indexOf(r.status);
+    const isDone   = r.sent === 'Y';
+    const dl       = r.deadline ? new Date(r.deadline) : null;
+    if (dl) dl.setHours(0,0,0,0);
+    const dlDiff   = dl ? Math.ceil((dl - todayDate) / 86400000) : null;
+    const isUrgent = dlDiff !== null && dlDiff <= 3 && !isDone;
+
+    // 카드 테두리/불투명도
+    const cardStyle = isDone
+      ? 'opacity:.6;'
+      : isUrgent
+        ? 'border-color:#FCA5A5;border-width:2px;'
+        : '';
+
+    // 진행 바 세그먼트
+    const progSegs = STATUS_STEPS.map((s,i) => {
+      const bg = i < stepIdx
+        ? 'background:var(--green)'
+        : i === stepIdx
+          ? isUrgent ? 'background:var(--red)' : 'background:var(--blue)'
+          : 'background:var(--paper3)';
+      return `<div style="flex:1;height:5px;border-radius:3px;${bg};transition:background .3s;"></div>`;
     }).join('');
-  }
+
+    // 현재 단계 라벨
+    const currentLabel = STATUS_STEPS[stepIdx] || r.status;
+    const deadlineStr = dlDiff !== null
+      ? dlDiff < 0
+        ? `<span style="color:var(--red);font-weight:700;">마감 ${Math.abs(dlDiff)}일 지남</span>`
+        : dlDiff === 0
+          ? `<span style="color:var(--red);font-weight:700;">오늘 마감</span>`
+          : dlDiff <= 3
+            ? `<span style="color:var(--amber);font-weight:600;">D-${dlDiff}</span>`
+            : `<span style="color:var(--ink4);">마감 ${r.deadline}</span>`
+      : r.deadline
+        ? `<span style="color:var(--ink4);">마감 ${r.deadline}</span>`
+        : `<span style="color:var(--ink4);">마감 미설정</span>`;
+
+    // 가이드 키워드
+    const guide = _guides.find(g => g.id === r.guideId);
+    let kwHtml = '';
+    if (!r.guideId) {
+      kwHtml = `<div style="padding:10px 14px;background:var(--amber-l);border-bottom:1px solid #FDE68A;">
+        <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:3px;">⚠ 가이드 미배정</div>
+        <div style="font-size:11px;color:var(--amber);">가이드 발송 전 확인하세요</div>
+      </div>`;
+    } else if (guide) {
+      const mainKws = guide.m1 ? guide.m1.split(',').map(k=>k.trim()).filter(Boolean) : [];
+      const subKws  = guide.m2 ? guide.m2.split(',').map(k=>k.trim()).filter(Boolean) : [];
+      kwHtml = `<div style="padding:10px 14px;background:var(--paper2);border-bottom:1px solid var(--line);">
+        <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:6px;">📋 ${guide.id}</div>
+        ${mainKws.length ? `<div style="margin-bottom:5px;display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;">
+          <span style="font-size:9px;font-weight:700;color:var(--ink4);background:var(--paper3);border-radius:3px;padding:1px 5px;flex-shrink:0;">메인</span>
+          ${mainKws.map(k=>`<span style="display:inline-block;background:var(--purple-l);color:var(--purple);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:600;margin:1px 0;">${k}</span>`).join('')}
+        </div>` : ''}
+        ${subKws.length ? `<div style="display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;">
+          <span style="font-size:9px;font-weight:700;color:var(--ink4);background:var(--paper3);border-radius:3px;padding:1px 5px;flex-shrink:0;">서브</span>
+          ${subKws.map(k=>`<span style="display:inline-block;background:var(--paper3);color:var(--ink2);border-radius:4px;padding:2px 7px;font-size:10px;border:1px solid var(--line2);margin:1px 0;">${k}</span>`).join('')}
+        </div>` : ''}
+      </div>`;
+    } else {
+      kwHtml = `<div style="padding:10px 14px;background:var(--paper2);border-bottom:1px solid var(--line);">
+        <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:3px;">📋 ${r.guideId}</div>
+        <div style="font-size:11px;color:var(--ink4);">키워드 정보 없음</div>
+      </div>`;
+    }
+
+    // 발송완료 상태 표시
+    const footRight = isDone
+      ? `<span style="color:var(--green);font-size:11px;font-weight:600;">✓ ${r.sentDate||''} 발송완료</span>`
+      : `<button class="btn-sm" onclick="event.stopPropagation();openRowDetail(${r.rowIndex})" style="font-size:11px;">수정</button>`;
+
+    return `<div onclick="openRowDetail(${r.rowIndex})" style="background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:box-shadow .2s,transform .2s;${cardStyle}"
+      onmouseover="this.style.boxShadow='0 6px 20px rgba(0,0,0,.1)';this.style.transform='translateY(-1px)'"
+      onmouseout="this.style.boxShadow='';this.style.transform=''">
+
+      <!-- 헤더 -->
+      <div style="padding:12px 14px 10px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid var(--line);${isUrgent&&!isDone?'background:var(--red-l);':isDone?'background:var(--purple-l);':''}">
+        ${pbadge(r.platform||'네이버 블로그')}
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.nick}</div>
+          <div style="font-size:11px;color:var(--ink3);margin-top:2px;">${r.category||''} ${r.visitors?'· 일방문 '+r.visitors:''}</div>
+        </div>
+        <div style="flex-shrink:0;">${sbadge(r.status)}</div>
+      </div>
+
+      <!-- 진행 바 -->
+      <div style="padding:12px 14px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;gap:3px;margin-bottom:6px;">${progSegs}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:11px;font-weight:600;color:${isUrgent?'var(--red)':isDone?'var(--green)':'var(--blue)'};">
+            ${isDone ? '✓ 완료' : '▶ ' + currentLabel}
+          </span>
+          <span style="font-size:11px;">${deadlineStr}</span>
+        </div>
+      </div>
+
+      <!-- 키워드 -->
+      ${kwHtml}
+
+      <!-- 하단 -->
+      <div style="padding:9px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3);">${feeStr(r.confirmFee||r.proposeFee)}</span>
+        ${footRight}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // 인라인 URL 저장
@@ -1376,47 +1315,238 @@ function openInfDetail(email) {
   document.getElementById('overlay').classList.add('open');
 }
 
-// ── 협업 행 상세 패널 ──────────────────────────────
+// ── 협업 행 상세 패널 (3탭 통합) ──────────────────
+let _spTab = 'collab'; // 현재 열린 탭
+
 function openRowDetail(rowIndex) {
-  const r = _rows.find(x=>x.rowIndex===rowIndex);
+  _panelTransitioning = true;
+  setTimeout(() => _panelTransitioning = false, 100);
+  const r = _rows.find(x => x.rowIndex === rowIndex);
   if (!r) return;
-  const stepIdx = STATUS_STEPS.indexOf(r.status);
-  document.getElementById('sp-title').textContent = r.nick + ' 협업 상세';
-  document.getElementById('sp-body').innerHTML = `
-    <div class="status-steps">
-      ${STATUS_STEPS.map((s,i)=>`<div class="step ${i<stepIdx?'done':i===stepIdx?'current':''}">
-        <div class="step-dot">${i<stepIdx?'✓':i+1}</div>
-        <div class="step-label">${s}</div>
-      </div>`).join('')}
-    </div>
-    <div class="detail-grid">
-      <div><span>이메일</span>${r.email}</div>
-      <div><span>차수</span>${r.cycle||'—'}</div>
-      <div><span>플랫폼</span>${pbadge(r.platform||'네이버 블로그')}</div>
-      <div><span>진행상태</span>${sbadge(r.status)}</div>
-      <div><span>제안금액</span>${feeStr(r.proposeFee)}</div>
-      <div><span>확정금액</span>${r.confirmFee?feeStr(r.confirmFee):'—'}</div>
-      <div><span>가이드ID</span>${r.guideId||'—'}</div>
-      <div><span>포스팅마감</span>${r.deadline||'—'}</div>
-    </div>
-    ${(r.postUrl||r.realName)?`
-      <hr class="divider">
-      <div class="sec-title">포스팅 / 발송 정보</div>
-      <div class="detail-grid">
-        <div><span>실명</span>${r.realName||'미수집'}</div>
-        <div><span>연락처</span>${r.phone||'미수집'}</div>
-        ${r.postUrl?`<div style="grid-column:1/-1"><span>포스팅 URL</span><a href="${r.postUrl}" target="_blank">${r.postUrl}</a></div>`:''}
-        ${r.postTitle?`<div style="grid-column:1/-1"><span>포스팅 제목</span>${r.postTitle}</div>`:''}
-      </div>`:''}
-    ${r.memo?`<hr class="divider"><div class="sec-title">메모</div><div class="memo-box">${r.memo}</div>`:''}
-    <div class="btn-row">
-      <button class="btn-s" onclick="openEditRow(${r.rowIndex})">수정</button>
-      ${r.status==='진행확정'?`<button class="btn-p" onclick="openGuideForm(${r.rowIndex},'가이드발송')">가이드 발송 입력</button>`:''}
-      ${r.status==='가이드발송'?`<button class="btn-p" onclick="openPostForm(${r.rowIndex},'포스팅완료')">포스팅 완료 입력</button>`:''}
-      ${['포스팅완료','발송대기'].includes(r.status)&&r.sent==='N'?`<button class="btn-green" onclick="doMarkSent(${r.rowIndex})">발송처리</button>`:''}
-      <button class="btn-s" onclick="openInfDetail('${r.email}')">전체 이력</button>
-    </div>`;
+  _spTab = 'collab';
+  _renderRowDetailPanel(r);
   document.getElementById('overlay').classList.add('open');
+}
+
+function _renderRowDetailPanel(r) {
+  const stepIdx = STATUS_STEPS.indexOf(r.status);
+  const guide   = _guides.find(g => g.id === r.guideId);
+
+  // 진행 단계 바
+  const stepsHtml = STATUS_STEPS.map((s,i) => {
+    const cls = i < stepIdx ? 'done' : i === stepIdx ? 'current' : '';
+    return `<div class="sp-rd-step ${cls}">
+      <div class="sp-rd-dot">${i < stepIdx ? '✓' : ''}</div>
+      <div class="sp-rd-lbl">${s}</div>
+    </div>`;
+  }).join('');
+
+  // 키워드 HTML
+  let kwHtml = '';
+  if (guide) {
+    const mains = guide.m1 ? guide.m1.split(',').map(k=>k.trim()).filter(Boolean) : [];
+    const subs  = guide.m2 ? guide.m2.split(',').map(k=>k.trim()).filter(Boolean) : [];
+    kwHtml = `
+      <div style="background:var(--paper2);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:4px;">
+        <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:8px;">📋 ${guide.id} ${guide.cycle?'· '+guide.cycle:''}</div>
+        ${mains.length ? `<div style="margin-bottom:6px;"><div style="font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;">메인 키워드</div>
+          <div>${mains.map(k=>`<span style="display:inline-block;background:var(--purple-l);color:var(--purple);border-radius:4px;padding:3px 8px;font-size:11px;font-weight:600;margin:2px 3px 2px 0;">${k}</span>`).join('')}</div></div>` : ''}
+        ${subs.length ? `<div><div style="font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;">서브 키워드</div>
+          <div>${subs.map(k=>`<span style="display:inline-block;background:var(--paper3);color:var(--ink2);border-radius:4px;padding:3px 8px;font-size:11px;border:1px solid var(--line2);margin:2px 3px 2px 0;">${k}</span>`).join('')}</div></div>` : ''}
+      </div>`;
+  } else if (r.guideId) {
+    kwHtml = `<div style="padding:10px;background:var(--paper3);border-radius:8px;font-size:12px;color:var(--ink3);">${r.guideId} — 키워드 정보 없음</div>`;
+  }
+
+  // 다음 단계 버튼
+  let nextBtn = '';
+  if (r.status === '진행확정')
+    nextBtn = `<button class="btn-p" style="background:var(--blue);flex:1;" onclick="openGuideForm(${r.rowIndex},'가이드발송')">→ 가이드 발송 입력</button>`;
+  else if (r.status === '가이드발송')
+    nextBtn = `<button class="btn-p" style="background:var(--green);flex:1;" onclick="openPostForm(${r.rowIndex},'포스팅완료')">→ 포스팅 완료 입력</button>`;
+  else if (['포스팅완료','발송대기'].includes(r.status) && r.sent === 'N')
+    nextBtn = `<button class="btn-p" style="background:var(--green);flex:1;" onclick="doMarkSent(${r.rowIndex})">→ 발송 처리</button>`;
+
+  // 탭 콘텐츠
+  const tabs = {
+    base: `
+      <div class="sp-rd-section">
+        <div class="sp-rd-sec-title">기본 정보</div>
+        <div class="sp-rd-2col">
+          <div class="sp-rd-field"><span class="sp-rd-label">플랫폼</span><div>${pbadge(r.platform||'네이버 블로그')}</div></div>
+          <div class="sp-rd-field"><span class="sp-rd-label">이메일</span><div style="font-size:11px;color:var(--ink2);word-break:break-all;">${r.email}</div></div>
+          <div class="sp-rd-field"><span class="sp-rd-label">카테고리</span><div>${r.category||'—'}</div></div>
+          <div class="sp-rd-field"><span class="sp-rd-label">방문자수</span><div>${r.visitors||'—'}</div></div>
+        </div>
+        <div class="sp-rd-field" style="margin-top:8px;">
+          <span class="sp-rd-label">블로그 URL</span>
+          ${r.blogUrl ? `<a href="${r.blogUrl}" target="_blank" style="font-size:12px;">${r.blogUrl}</a>` : '<div style="color:var(--ink4);">—</div>'}
+        </div>
+        ${r.memo ? `<div class="sp-rd-field" style="margin-top:8px;"><span class="sp-rd-label">메모</span>
+          <div style="background:#FAFAF7;border:1px solid #E8E4D4;border-radius:6px;padding:8px 10px;font-size:12px;white-space:pre-wrap;">${r.memo}</div></div>` : ''}
+      </div>
+      <div class="sp-rd-section">
+        <div class="sp-rd-sec-title">협업 이력</div>
+        ${rowsOf(r.email).map(h=>`
+          <div style="border-left:2px solid ${h.rowIndex===r.rowIndex?'var(--blue)':'var(--line2)'};padding:7px 10px;margin-bottom:6px;border-radius:0 6px 6px 0;background:${h.rowIndex===r.rowIndex?'var(--blue-l)':'var(--paper2)'};font-size:12px;cursor:pointer;" onclick="openRowDetail(${h.rowIndex})">
+            <div style="display:flex;align-items:center;gap:8px;">${sbadge(h.status)}<strong>${h.cycle||'차수 없음'}</strong><span style="font-family:monospace;font-size:11px;">${feeStr(h.proposeFee)}</span></div>
+          </div>`).join('')}
+      </div>`,
+
+    collab: `
+      <div class="sp-rd-section">
+        <div class="sp-rd-sec-title">협업 정보</div>
+        <div class="sp-rd-2col">
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">차수</span>
+            <input class="sp-rd-input" id="rd-cycle" value="${r.cycle||''}">
+          </div>
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">진행상태</span>
+            <select class="sp-rd-select" id="rd-status">
+              ${STATUSES.map(s=>`<option${s===r.status?' selected':''}>${s}</option>`).join('')}
+            </select>
+          </div>
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">제안금액</span>
+            <select class="sp-rd-select" id="rd-fee">
+              <option value="">—</option>
+              ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.proposeFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
+            </select>
+          </div>
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">가이드 ID</span>
+            <input class="sp-rd-input" id="rd-guide" value="${r.guideId||''}">
+          </div>
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">가이드 발송일</span>
+            <input class="sp-rd-input" type="date" id="rd-gsent" value="${r.guideSent||''}">
+          </div>
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">포스팅 마감일</span>
+            <input class="sp-rd-input" type="date" id="rd-deadline" value="${r.deadline||''}">
+          </div>
+        </div>
+      </div>
+      ${r.guideId ? `<div class="sp-rd-section">
+        <div class="sp-rd-sec-title">담당 가이드 키워드</div>
+        ${kwHtml || '<div style="color:var(--ink4);font-size:12px;">가이드 정보 없음</div>'}
+      </div>` : ''}`,
+
+    post: `
+      <div class="sp-rd-section">
+        <div class="sp-rd-sec-title">포스팅 정보</div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">포스팅 URL</span>
+          <input class="sp-rd-input" id="rd-purl" value="${r.postUrl||''}" placeholder="https://blog.naver.com/...">
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">포스팅 제목</span>
+          <input class="sp-rd-input" id="rd-ptitle" value="${r.postTitle||''}" placeholder="포스팅 제목">
+        </div>
+      </div>
+      <div class="sp-rd-section">
+        <div class="sp-rd-sec-title">발송 정보</div>
+        <div class="sp-rd-2col">
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">실명 (입금자명)</span>
+            <input class="sp-rd-input" id="rd-name" value="${r.realName||''}" placeholder="홍길동">
+          </div>
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">연락처</span>
+            <input class="sp-rd-input" id="rd-phone" value="${r.phone||''}" placeholder="010-0000-0000">
+          </div>
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">확정금액</span>
+          <select class="sp-rd-select" id="rd-cfee">
+            <option value="">—</option>
+            ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.confirmFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
+          </select>
+        </div>
+        <div class="sp-rd-2col">
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">상품권 발송 여부</span>
+            <div>${r.sent==='Y'?'<span style="color:var(--green);font-weight:600;">✓ 발송완료</span>':'<span style="color:var(--ink4);">미발송</span>'}</div>
+          </div>
+          <div class="sp-rd-field">
+            <span class="sp-rd-label">발송일</span>
+            <div>${r.sentDate||'—'}</div>
+          </div>
+        </div>
+      </div>`
+  };
+
+  document.getElementById('sp-title').textContent = r.nick;
+  document.getElementById('sp-body').innerHTML = `
+    <div style="background:var(--ink);padding:12px 18px 0;">
+      ${pbadge(r.platform||'네이버 블로그')}
+      <div style="color:#F1F5F9;font-size:15px;font-weight:700;margin-top:6px;">${r.nick}</div>
+      <div style="color:#64748B;font-size:11px;margin-top:2px;margin-bottom:12px;">${r.email} · ${r.cycle||'차수 없음'}</div>
+      <!-- 진행 단계 바 -->
+      <div style="display:flex;gap:3px;margin-bottom:6px;">${STATUS_STEPS.map((s,i)=>{
+        const bg = i<stepIdx?'background:var(--green)':i===stepIdx?'background:var(--blue)':'background:#334155';
+        return `<div style="flex:1;height:4px;border-radius:2px;${bg};"></div>`;
+      }).join('')}</div>
+      <div style="display:flex;gap:3px;padding-bottom:12px;">${STATUS_STEPS.map((s,i)=>{
+        const color = i<stepIdx?'#34D399':i===stepIdx?'#93C5FD':'#475569';
+        const weight = i===stepIdx?'700':'400';
+        return `<div style="flex:1;font-size:8px;color:${color};font-weight:${weight};text-align:center;white-space:nowrap;overflow:hidden;">${s}</div>`;
+      }).join('')}</div>
+    </div>
+
+    <!-- 탭 -->
+    <div style="display:flex;border-bottom:1px solid var(--line);background:var(--paper2);">
+      <button class="sp-rd-tab${_spTab==='base'?' on':''}" onclick="spSwitchTab('base',${r.rowIndex})">👤 기본정보</button>
+      <button class="sp-rd-tab${_spTab==='collab'?' on':''}" onclick="spSwitchTab('collab',${r.rowIndex})">📋 협업</button>
+      <button class="sp-rd-tab${_spTab==='post'?' on':''}" onclick="spSwitchTab('post',${r.rowIndex})">📦 포스팅·발송</button>
+    </div>
+
+    <!-- 탭 콘텐츠 -->
+    <div id="sp-tab-content" style="overflow-y:auto;flex:1;">${tabs[_spTab]}</div>
+
+    <!-- 하단 버튼 -->
+    <div style="padding:12px 18px;border-top:1px solid var(--line);background:var(--paper2);display:flex;gap:8px;position:sticky;bottom:0;">
+      <button class="btn-s" onclick="closePanel()">닫기</button>
+      <button class="btn-p" onclick="saveRowDetailAll(${r.rowIndex})">저장</button>
+      ${nextBtn}
+    </div>`;
+}
+
+function spSwitchTab(tab, rowIndex) {
+  _spTab = tab;
+  const r = _rows.find(x => x.rowIndex === rowIndex);
+  if (!r) return;
+  // 탭 버튼 활성화
+  document.querySelectorAll('.sp-rd-tab').forEach(b => b.classList.remove('on'));
+  event.target.classList.add('on');
+  // 콘텐츠 영역만 다시 렌더
+  _renderRowDetailPanel(r);
+}
+
+function saveRowDetailAll(rowIndex) {
+  const data = {};
+  const fields = {
+    'rd-cycle': 'cycle', 'rd-status': 'status', 'rd-fee': 'proposeFee',
+    'rd-guide': 'guideId', 'rd-gsent': 'guideSent', 'rd-deadline': 'deadline',
+    'rd-purl': 'postUrl', 'rd-ptitle': 'postTitle',
+    'rd-name': 'realName', 'rd-phone': 'phone', 'rd-cfee': 'confirmFee'
+  };
+  Object.entries(fields).forEach(([elId, key]) => {
+    const el = document.getElementById(elId);
+    if (el) data[key] = el.value || '';
+  });
+
+  const row = _rows.find(r => r.rowIndex === rowIndex);
+  if (row) Object.assign(row, data);
+  _summary = _buildSummary(_rows);
+  renderDash(); renderCyc(); renderShip(); renderDone(); renderAll();
+  closePanel();
+  toast('저장 중...', '');
+
+  apiPost({ action: 'updateRow', rowIndex, data })
+    .then(() => { toast('수정 완료', 'ok'); loadAll(); })
+    .catch(e => { toast('오류: ' + e, 'err'); loadAll(); });
 }
 
 // ── 가이드 발송 입력 폼 ────────────────────────────
@@ -1762,14 +1892,8 @@ function saveEditInf(email) {
 }
 
 function openEditRow(rowIndex) {
-  _panelTransitioning = true;
-  setTimeout(() => _panelTransitioning = false, 100);
-  const r = _rows.find(x => x.rowIndex === rowIndex);
-  if (!r) { toast('협업 데이터를 찾을 수 없습니다.', 'err'); return; }
-  _editRow = rowIndex;
-  document.getElementById('sp-title').textContent = r.nick + ' 협업 수정';
-  document.getElementById('sp-body').innerHTML = buildEditRowForm(r);
-  document.getElementById('overlay').classList.add('open');
+  _spTab = 'collab';
+  openRowDetail(rowIndex);
 }
 
 function buildEditRowForm(r) {
