@@ -70,6 +70,54 @@ button,input,select,textarea { font-family:inherit; font-size:13px; }
 .panel { display:none; }
 .panel.on { display:block; }
 
+/* ── 대시보드 ── */
+.dash-stat-box { text-align:center; padding:8px 14px; background:rgba(255,255,255,.05); border-radius:8px; border:1px solid #334155; min-width:72px; }
+.dash-stat-box .dsv { font-size:20px; font-weight:700; font-family:'JetBrains Mono',monospace; color:#94A3B8; }
+.dash-stat-box .dsl { font-size:10px; color:#64748B; margin-top:2px; }
+.dash-stat-box.v-green .dsv { color:#34D399; }
+.dash-stat-box.v-amber .dsv { color:#FCD34D; }
+.dash-stat-box.v-red   .dsv { color:#F87171; }
+.dash-urgent-row { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:6px; border:1px solid; }
+.dash-week-card { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; border:1px solid var(--line); background:var(--paper2); cursor:pointer; transition:background .15s; }
+.dash-week-card:hover { background:var(--blue-l); }
+.dash-week-card.overdue { border-color:#FECACA; background:#FFF5F5; }
+.dash-week-card.today   { border-color:#FCA5A5; background:var(--red-l); }
+.dash-week-card.soon    { border-color:#FDE68A; background:var(--amber-l); }
+.dash-dl-date { min-width:46px; text-align:center; padding:5px 6px; border-radius:6px; background:var(--paper); border:1px solid var(--line2); font-family:'JetBrains Mono',monospace; }
+.dash-dl-date .dd { font-size:16px; font-weight:700; line-height:1; }
+.dash-dl-date .dm { font-size:9px; color:var(--ink3); margin-top:2px; }
+.overdue .dash-dl-date { background:var(--red-l); border-color:#FECACA; }
+.overdue .dash-dl-date .dd { color:var(--red); }
+.today .dash-dl-date { background:var(--red); border-color:var(--red); }
+.today .dash-dl-date .dd, .today .dash-dl-date .dm { color:#fff; }
+.soon .dash-dl-date { background:var(--amber-l); border-color:#FDE68A; }
+.soon .dash-dl-date .dd { color:var(--amber); }
+.dash-tl-card { border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--paper); cursor:pointer; transition:box-shadow .15s; }
+.dash-tl-card:hover { box-shadow:0 4px 12px rgba(0,0,0,.1); }
+.dash-tl-card.urgent-card { border-color:#FCA5A5; }
+.dash-tl-card.done-card { opacity:.65; }
+.dash-tl-head { padding:9px 13px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:7px; }
+.dash-tl-head.urgent-head { background:var(--red-l); }
+.dash-tl-head.done-head { background:var(--purple-l); }
+.dash-tl-nick { font-weight:700; font-size:12px; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.dash-tl-steps { padding:8px 13px; }
+.dash-tl-step { display:flex; align-items:center; gap:7px; padding:3px 0; font-size:11px; }
+.dash-tl-dot { width:14px; height:14px; border-radius:50%; border:2px solid var(--line2); display:flex; align-items:center; justify-content:center; font-size:7px; font-weight:700; flex-shrink:0; }
+.dash-tl-dot.done    { background:var(--green); border-color:var(--green); color:#fff; }
+.dash-tl-dot.current { background:var(--blue);  border-color:var(--blue);  color:#fff; box-shadow:0 0 0 2px rgba(37,99,235,.2); }
+.dash-tl-dot.pending { background:var(--paper3); border-color:var(--line2); }
+.dash-tl-sname { flex:1; color:var(--ink2); }
+.dash-tl-sname.current { font-weight:700; color:var(--ink); }
+.dash-tl-sname.pending { color:var(--ink4); }
+.dash-tl-sdate { font-size:10px; color:var(--ink4); font-family:'JetBrains Mono',monospace; }
+.dash-tl-sdate.near { color:var(--amber); font-weight:600; }
+.dash-tl-sdate.over { color:var(--red); font-weight:600; }
+.dash-tl-foot { padding:7px 13px; border-top:1px solid var(--line); background:var(--paper2); display:flex; align-items:center; justify-content:space-between; }
+.inline-url { padding:4px 8px; border:1px solid transparent; border-radius:4px; background:transparent; font-size:11px; color:var(--ink); width:100%; cursor:text; font-family:inherit; }
+.inline-url::placeholder { color:var(--ink4); }
+.inline-url:hover { border-color:var(--line2); background:var(--paper2); }
+.inline-url:focus { border-color:var(--blue); background:var(--paper); outline:none; box-shadow:0 0 0 2px rgba(37,99,235,.1); }
+
 .stat-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:16px; }
 .stat-card { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-lg); padding:14px 16px; box-shadow:var(--sh); }
 .stat-label { font-size:10px; font-weight:600; color:var(--ink3); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
@@ -219,7 +267,8 @@ select.fc { cursor:pointer; }
     <span class="logo-text">인플루언서 관리</span>
   </a>
   <nav class="nav">
-    <button class="nav-btn on"  onclick="switchTab('all',this)">전체 인플루언서</button>
+    <button class="nav-btn on"  onclick="switchTab('dash',this)">📊 이번 차수 현황</button>
+    <button class="nav-btn"     onclick="switchTab('all',this)">전체 인플루언서</button>
     <button class="nav-btn"     onclick="switchTab('cyc',this)">차수별 운영</button>
     <button class="nav-btn"     onclick="switchTab('ship',this)">발송 필요</button>
     <button class="nav-btn"     onclick="switchTab('done',this)">발송 완료</button>
@@ -237,7 +286,91 @@ select.fc { cursor:pointer; }
 
 <div class="main">
 
-<div id="tab-all" class="panel on">
+<div id="tab-dash" class="panel on">
+  <!-- 차수 배너 -->
+  <div id="dash-banner" style="background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);border:1px solid #334155;border-radius:12px;padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div id="dash-cycle-tag" style="background:var(--blue);color:#fff;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;"></div>
+      <div>
+        <div id="dash-cycle-title" style="color:#F1F5F9;font-size:17px;font-weight:700;"></div>
+        <div id="dash-cycle-sub" style="color:#64748B;font-size:11px;margin-top:2px;"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <div id="dash-stat-total"  class="dash-stat-box"></div>
+      <div id="dash-stat-active" class="dash-stat-box v-green"></div>
+      <div id="dash-stat-post"   class="dash-stat-box v-amber"></div>
+      <div id="dash-stat-ship"   class="dash-stat-box v-red"></div>
+    </div>
+  </div>
+
+  <!-- 차수 없음 -->
+  <div id="dash-empty" style="display:none;background:var(--paper);border:2px dashed var(--line2);border-radius:12px;padding:48px;text-align:center;margin-bottom:16px;">
+    <div style="font-size:32px;margin-bottom:12px;">📭</div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px;" id="dash-empty-title"></div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:16px;">해당 월에 등록된 인플루언서가 없습니다.<br>등록 후 자동으로 표시됩니다.</div>
+    <button class="btn-p" onclick="openAddPanel()">+ 인플루언서 첫 등록</button>
+  </div>
+
+  <!-- 발송 임박 (마감 7일 전 최상단) -->
+  <div id="dash-urgent" style="display:none;margin-bottom:16px;">
+    <div style="background:var(--paper);border:2px solid #FCA5A5;border-radius:12px;overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid #FECACA;background:var(--red-l);display:flex;align-items:center;gap:8px;">
+        <span style="font-size:13px;font-weight:700;color:var(--red);">🚨 발송 임박 — 7일 이내</span>
+        <span id="dash-urgent-cnt" style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--red);color:#fff;"></span>
+        <span style="margin-left:auto;font-size:11px;color:var(--red);">마감일 7일 전부터 최상단 표시</span>
+      </div>
+      <div id="dash-urgent-body" style="padding:12px 16px;display:flex;flex-direction:column;gap:6px;"></div>
+    </div>
+  </div>
+
+  <!-- 이번 주 마감 + 포스팅 미완료 (2열 그리드) -->
+  <div id="dash-main-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+
+    <!-- 이번 주 마감 -->
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper2);display:flex;align-items:center;gap:8px;">
+        <span style="font-size:13px;font-weight:600;">📅 이번 주 마감</span>
+        <span id="dash-week-cnt" style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--amber-l);color:var(--amber);"></span>
+        <span id="dash-week-range" style="margin-left:auto;font-size:11px;color:var(--ink4);"></span>
+      </div>
+      <div id="dash-week-body" style="padding:12px;display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto;"></div>
+    </div>
+
+    <!-- 포스팅 미완료 인라인 편집 -->
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper2);display:flex;align-items:center;gap:8px;">
+        <span style="font-size:13px;font-weight:600;">✍️ 포스팅 미완료</span>
+        <span id="dash-post-cnt" style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--blue-l);color:var(--blue);"></span>
+        <span style="margin-left:auto;font-size:11px;color:var(--ink4);">URL 셀 클릭 → 바로 입력 → Enter 저장</span>
+      </div>
+      <div style="overflow-x:auto;max-height:360px;overflow-y:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr>
+              <th style="background:var(--ink);color:#94A3B8;font-size:10px;font-weight:500;padding:8px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;">닉네임</th>
+              <th style="background:var(--ink);color:#94A3B8;font-size:10px;font-weight:500;padding:8px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;">상태</th>
+              <th style="background:var(--ink);color:#94A3B8;font-size:10px;font-weight:500;padding:8px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;">마감일</th>
+              <th style="background:var(--ink);color:#94A3B8;font-size:10px;font-weight:500;padding:8px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;">포스팅 URL</th>
+            </tr>
+          </thead>
+          <tbody id="dash-post-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 전체 진행 현황 카드 -->
+  <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper2);display:flex;align-items:center;gap:8px;">
+      <span style="font-size:13px;font-weight:600;">🗂️ 전체 진행 현황</span>
+      <span id="dash-all-cnt" style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--purple-l);color:var(--purple);"></span>
+    </div>
+    <div id="dash-cards" style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;"></div>
+  </div>
+</div>
+
+<div id="tab-all" class="panel">
   <div class="stat-row" id="all-stats"></div>
   <div class="toolbar">
     <div class="filter-group" id="all-pf">
@@ -456,7 +589,7 @@ select.fc { cursor:pointer; }
 // ════════════════════════════════════════════════════
 // ★ 여기에 Apps Script 배포 URL을 붙여넣으세요 ★
 // ════════════════════════════════════════════════════
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUJeJ1xjSSsyWiws0xS_7yIvfA9XDuFegDuZ8RdTULc5OKxewTKpXpumItOh7ifMboaA/exec';
+const SCRIPT_URL = '여기에_Apps_Script_배포_URL_붙여넣기';
 
 // GET 래퍼
 async function apiGet(action) {
@@ -508,15 +641,35 @@ let _panelTransitioning = false;
 // ── 초기화 ────────────────────────────────────────
 window.onload = () => loadAll();
 
+function _showLoader() {
+  let el = document.getElementById('global-loader');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'global-loader';
+    el.style.cssText = [
+      'position:fixed','inset:0','z-index:500',
+      'background:rgba(15,23,42,.55)',
+      'backdrop-filter:blur(3px)',
+      'display:flex','flex-direction:column',
+      'align-items:center','justify-content:center','gap:14px'
+    ].join(';');
+    el.innerHTML = `
+      <div style="width:40px;height:40px;border:3px solid #334155;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;"></div>
+      <div style="color:#94A3B8;font-size:13px;font-weight:500;">불러오는 중...</div>
+      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>`;
+    document.body.appendChild(el);
+  }
+  el.style.display = 'flex';
+}
+function _hideLoader() {
+  const el = document.getElementById('global-loader');
+  if (el) el.style.display = 'none';
+}
+
 function loadAll() {
   _loadToken++;
   const token = _loadToken;
-
-  const loadMsg = '<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--ink4)">불러오는 중...</td></tr>';
-  ['all-body','cyc-body','ship-body','done-body','black-body'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = loadMsg;
-  });
+  _showLoader();
 
   Promise.all([
     apiGet('getAllRows'),
@@ -528,20 +681,41 @@ function loadAll() {
     _afterLoad();
   }).catch(err => {
     toast('데이터 로드 실패: ' + err, 'err');
+  }).finally(() => {
+    if (token === _loadToken) _hideLoader();
   });
 }
 
 function _afterLoad() {
   _summary  = _buildSummary(_rows);
   _cycles   = [...new Set(_rows.map(r => r.cycle).filter(Boolean))].sort().reverse();
-  _curCycle = _cycles[0] || '';
+  // 차수별 운영 탭: 오늘 날짜 기준 월에 맞는 차수 자동 선택
+  _curCycle = _autoDetectCycle() || _cycles[0] || '';
   _buildCycleSels();
+  renderDash();
   renderAll();
   renderCyc();
   renderShip();
   renderDone();
   renderBlack();
   renderGuide();
+}
+
+// 오늘 월 기준으로 차수 자동 감지
+function _autoDetectCycle() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  // 차수 목록에서 현재 연도+월에 해당하는 항목 검색
+  // 형식 예: "2026년 4차", "2026년 4월 4차" 등 다양한 형식 지원
+  const monthStr = String(month);
+  return _cycles.find(c => {
+    const s = String(c);
+    return s.includes(String(year)) && (
+      s.includes(monthStr + '차') ||
+      s.includes(monthStr + '월')
+    );
+  }) || null;
 }
 
 function _buildSummary(rows) {
@@ -632,6 +806,237 @@ function qsel(rowIndex, status) {
   return `<select class="qs" onchange="quickStatus(${rowIndex},this.value)" onclick="event.stopPropagation()">
     ${STATUSES.map(s=>`<option${s===status?' selected':''}>${s}</option>`).join('')}
   </select>`;
+}
+
+// ── 렌더: 대시보드 ────────────────────────────────
+function renderDash() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+
+  // 오늘 날짜 기준 차수 감지
+  const dashCycle = _autoDetectCycle() || _curCycle;
+  const cycleRows = _rows.filter(r => r.cycle === dashCycle);
+
+  // 배너
+  const tag = document.getElementById('dash-cycle-tag');
+  const title = document.getElementById('dash-cycle-title');
+  const sub = document.getElementById('dash-cycle-sub');
+  if (tag)   tag.textContent   = dashCycle || `${year}년 ${month}차`;
+  if (title) title.textContent = `${month}월 운영 현황`;
+
+  // 마감일 계산 (차수 전체 마감: 가장 늦은 deadline)
+  const deadlines = cycleRows.map(r => r.deadline).filter(Boolean).sort();
+  const lastDeadline = deadlines[deadlines.length - 1] || '';
+  if (sub) sub.textContent = lastDeadline
+    ? `오늘 기준 자동 선택 · 차수 마감 ${lastDeadline}`
+    : '오늘 기준 자동 선택';
+
+  // 통계
+  const total   = cycleRows.length;
+  const active  = cycleRows.filter(r => ['진행확정','가이드발송','포스팅완료','발송대기','발송완료'].includes(r.status)).length;
+  const postPending = cycleRows.filter(r => !r.postUrl && ['가이드발송','진행확정'].includes(r.status)).length;
+  const shipPending = cycleRows.filter(r => r.sent === 'N' && ['포스팅완료','발송대기'].includes(r.status)).length;
+
+  function setStatBox(id, v, label) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = `<div class="dsv">${v}</div><div class="dsl">${label}</div>`;
+  }
+  setStatBox('dash-stat-total',  total,       '총 컨택');
+  setStatBox('dash-stat-active', active,      '진행확정+');
+  setStatBox('dash-stat-post',   postPending, '포스팅 대기');
+  setStatBox('dash-stat-ship',   shipPending, '발송 대기');
+
+  // 차수 없음 처리
+  const emptyEl = document.getElementById('dash-empty');
+  const bannerEl = document.getElementById('dash-banner');
+  const mainGrid = document.getElementById('dash-main-grid');
+  const cardsEl  = document.getElementById('dash-cards');
+  const emptyTitle = document.getElementById('dash-empty-title');
+
+  if (!dashCycle || cycleRows.length === 0) {
+    if (emptyEl)   emptyEl.style.display = '';
+    if (bannerEl)  bannerEl.style.display = 'none';
+    if (mainGrid)  mainGrid.style.display = 'none';
+    if (cardsEl)   cardsEl.parentElement.style.display = 'none';
+    if (emptyTitle) emptyTitle.textContent = `${year}년 ${month}차 데이터가 없습니다`;
+    return;
+  }
+  if (emptyEl)  emptyEl.style.display  = 'none';
+  if (bannerEl) bannerEl.style.display = '';
+  if (mainGrid) mainGrid.style.display = '';
+  if (cardsEl)  cardsEl.parentElement.style.display = '';
+
+  // 발송 임박 (마감일 7일 이내)
+  const urgentEl   = document.getElementById('dash-urgent');
+  const urgentBody = document.getElementById('dash-urgent-body');
+  const urgentCnt  = document.getElementById('dash-urgent-cnt');
+  const todayMs    = now.setHours(0,0,0,0) && now.getTime() || new Date().setHours(0,0,0,0);
+  const todayDate  = new Date(); todayDate.setHours(0,0,0,0);
+
+  // 차수 최종 마감일 기준 7일 전 체크
+  const lastDL = lastDeadline ? new Date(lastDeadline) : null;
+  const isUrgentPeriod = lastDL && (lastDL - todayDate) / 86400000 <= 7;
+
+  const shipRows = cycleRows.filter(r => r.sent === 'N' && ['포스팅완료','발송대기'].includes(r.status));
+  if (isUrgentPeriod && shipRows.length > 0) {
+    if (urgentEl) urgentEl.style.display = '';
+    if (urgentCnt) urgentCnt.textContent = shipRows.length + '명';
+    if (urgentBody) urgentBody.innerHTML = shipRows.map(r => {
+      const daysLeft = lastDL ? Math.ceil((lastDL - todayDate) / 86400000) : null;
+      const dLabel = daysLeft === null ? '' : daysLeft <= 0 ? '마감 지남' : `D-${daysLeft}`;
+      const bgColor = daysLeft !== null && daysLeft <= 2 ? 'var(--red-l)' : 'var(--amber-l)';
+      const bdColor = daysLeft !== null && daysLeft <= 2 ? '#FECACA' : '#FDE68A';
+      const dColor  = daysLeft !== null && daysLeft <= 2 ? 'var(--red)' : 'var(--amber)';
+      return `<div class="dash-urgent-row" style="background:${bgColor};border-color:${bdColor};">
+        <span style="font-size:11px;font-weight:700;color:${dColor};min-width:48px;">${dLabel}</span>
+        <strong style="flex:1">${r.nick}</strong>
+        ${sbadge(r.status)}
+        <span style="font-size:11px;color:var(--ink3);">${r.realName ? r.realName + ' · ' + (r.phone||'') : '실명 미입력'}</span>
+        <button class="btn-sm" onclick="openRowDetail(${r.rowIndex})">바로 입력</button>
+      </div>`;
+    }).join('');
+  } else {
+    if (urgentEl) urgentEl.style.display = 'none';
+  }
+
+  // 이번 주 마감 (월~일)
+  const weekStart = new Date(todayDate); weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // 월
+  const weekEnd   = new Date(weekStart); weekEnd.setDate(weekEnd.getDate() + 6); // 일
+  const fmt = d => `${d.getMonth()+1}/${d.getDate()}`;
+  const weekRange = document.getElementById('dash-week-range');
+  if (weekRange) weekRange.textContent = `${fmt(weekStart)} ~ ${fmt(weekEnd)}`;
+
+  const weekRows = cycleRows.filter(r => {
+    if (!r.deadline) return false;
+    const dl = new Date(r.deadline); dl.setHours(0,0,0,0);
+    return dl >= weekStart && dl <= weekEnd;
+  }).sort((a,b) => new Date(a.deadline) - new Date(b.deadline));
+
+  const weekCnt  = document.getElementById('dash-week-cnt');
+  const weekBody = document.getElementById('dash-week-body');
+  if (weekCnt) weekCnt.textContent = weekRows.length + '명';
+  if (weekBody) weekBody.innerHTML = weekRows.length === 0
+    ? '<div style="color:var(--ink4);font-size:12px;padding:12px 0;text-align:center;">이번 주 마감 없음</div>'
+    : weekRows.map(r => {
+        const dl = new Date(r.deadline); dl.setHours(0,0,0,0);
+        const diff = Math.ceil((dl - todayDate) / 86400000);
+        const cls  = diff < 0 ? 'overdue' : diff === 0 ? 'today' : diff <= 3 ? 'soon' : '';
+        const dTag = diff < 0 ? '지남' : diff === 0 ? '오늘' : `D-${diff}`;
+        const dayNames = ['일','월','화','수','목','금','토'];
+        return `<div class="dash-week-card ${cls}" onclick="openRowDetail(${r.rowIndex})">
+          <div class="dash-dl-date">
+            <div class="dd">${dl.getDate()}</div>
+            <div class="dm">${diff===0?'오늘':dayNames[dl.getDay()]}</div>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:600;font-size:12px;">${r.nick}</div>
+            <div style="font-size:11px;color:var(--ink3);margin-top:2px;">${r.platform||''} · ${r.status}</div>
+          </div>
+          <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;${diff<0?'background:var(--red-l);color:var(--red)':diff===0?'background:var(--red);color:#fff':diff<=3?'background:var(--amber-l);color:var(--amber)':'background:var(--paper3);color:var(--ink3)'}">${dTag}</span>
+        </div>`;
+      }).join('');
+
+  // 포스팅 미완료 인라인 편집
+  const postRows = cycleRows.filter(r => !r.postUrl && ['가이드발송','진행확정','컨택완료','답변대기'].includes(r.status));
+  const postCnt  = document.getElementById('dash-post-cnt');
+  const postBody = document.getElementById('dash-post-body');
+  if (postCnt) postCnt.textContent = postRows.length + '명';
+  if (postBody) postBody.innerHTML = postRows.length === 0
+    ? '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--ink4);font-size:12px;">포스팅 미완료 없음</td></tr>'
+    : postRows.map(r => {
+        const dl = r.deadline ? new Date(r.deadline) : null;
+        const dlStr = dl ? (() => {
+          dl.setHours(0,0,0,0);
+          const diff = Math.ceil((dl - todayDate) / 86400000);
+          const color = diff < 0 ? 'color:var(--red);font-weight:600' : diff <= 3 ? 'color:var(--amber);font-weight:600' : '';
+          return `<span style="${color}">${r.deadline}${diff===0?' (오늘)':diff<0?' (지남)':''}</span>`;
+        })() : '—';
+        return `<tr style="border-bottom:1px solid var(--line);">
+          <td style="padding:8px 12px;white-space:nowrap;"><strong>${r.nick}</strong></td>
+          <td style="padding:8px 12px;">${sbadge(r.status)}</td>
+          <td style="padding:8px 12px;font-size:11px;">${dlStr}</td>
+          <td style="padding:4px 8px;">
+            <input class="inline-url" placeholder="URL 입력 후 Enter"
+              onkeydown="if(event.key==='Enter'){saveInlineUrl(${r.rowIndex},this.value,this)}"
+              onblur="if(this.value.trim())saveInlineUrl(${r.rowIndex},this.value,this)">
+          </td>
+        </tr>`;
+      }).join('');
+
+  // 전체 진행 현황 카드
+  const allCnt  = document.getElementById('dash-all-cnt');
+  const cards   = document.getElementById('dash-cards');
+  if (allCnt) allCnt.textContent = cycleRows.length + '명';
+  if (cards) {
+    const sorted = [...cycleRows].sort((a,b) => {
+      const order = {
+        '가이드발송':0,'포스팅완료':1,'발송대기':2,
+        '진행확정':3,'컨택완료':4,'답변대기':5,
+        '발송완료':6,'거절':7,'블랙리스트':8
+      };
+      return (order[a.status]??9) - (order[b.status]??9);
+    });
+    cards.innerHTML = sorted.map(r => {
+      const stepIdx = STATUS_STEPS.indexOf(r.status);
+      const isDone  = r.sent === 'Y';
+      const dl      = r.deadline ? new Date(r.deadline) : null;
+      if (dl) dl.setHours(0,0,0,0);
+      const dlDiff  = dl ? Math.ceil((dl - todayDate) / 86400000) : null;
+      const isUrgent = dlDiff !== null && dlDiff <= 3 && !isDone;
+      const headCls = isDone ? 'done-head' : isUrgent ? 'urgent-head' : '';
+      const cardCls = isDone ? 'done-card' : isUrgent ? 'urgent-card' : '';
+      return `<div class="dash-tl-card ${cardCls}" onclick="openRowDetail(${r.rowIndex})">
+        <div class="dash-tl-head ${headCls}">
+          ${pbadge(r.platform||'네이버 블로그')}
+          <span class="dash-tl-nick">${r.nick}</span>
+          ${isUrgent ? `<span style="font-size:10px;font-weight:700;color:var(--red);">D-${dlDiff}</span>` : sbadge(r.status)}
+        </div>
+        <div class="dash-tl-steps">
+          ${STATUS_STEPS.map((s,i) => {
+            const dotCls  = i < stepIdx ? 'done' : i === stepIdx ? 'current' : 'pending';
+            const nameCls = i < stepIdx ? '' : i === stepIdx ? 'current' : 'pending';
+            let dateStr = '';
+            if (s === '가이드발송' && r.guideSent) dateStr = r.guideSent;
+            if (s === '포스팅완료' && r.postUrl)   dateStr = r.deadline || '';
+            if (s === '발송완료'   && r.sentDate)  dateStr = r.sentDate;
+            const isDeadlineStep = s === '가이드발송' && r.deadline && i === stepIdx;
+            const dateCls = isDeadlineStep && dlDiff !== null
+              ? (dlDiff < 0 ? 'over' : dlDiff <= 3 ? 'near' : '')
+              : '';
+            const showDate = isDeadlineStep ? (r.deadline||'') : dateStr;
+            return `<div class="dash-tl-step">
+              <div class="dash-tl-dot ${dotCls}">${i < stepIdx ? '✓' : ''}</div>
+              <span class="dash-tl-sname ${nameCls}">${s}</span>
+              ${showDate ? `<span class="dash-tl-sdate ${dateCls}">${showDate}</span>` : ''}
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="dash-tl-foot">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3);">${feeStr(r.confirmFee||r.proposeFee)}</span>
+          <button class="btn-sm" onclick="event.stopPropagation();openRowDetail(${r.rowIndex})">수정</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// 인라인 URL 저장
+function saveInlineUrl(rowIndex, url, inputEl) {
+  url = url.trim();
+  if (!url) return;
+  inputEl.disabled = true;
+  apiPost({ action: 'updateRow', rowIndex, data: { postUrl: url } })
+    .then(() => {
+      const row = _rows.find(r => r.rowIndex === rowIndex);
+      if (row) row.postUrl = url;
+      toast('포스팅 URL 저장됨', 'ok');
+      renderDash();
+    })
+    .catch(e => {
+      inputEl.disabled = false;
+      toast('저장 오류: ' + e, 'err');
+    });
 }
 
 // ── 렌더: 전체 인플루언서 ─────────────────────────
