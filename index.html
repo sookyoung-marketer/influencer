@@ -856,7 +856,8 @@ function renderDash() {
     const dl       = r.deadline ? new Date(r.deadline) : null;
     if (dl) dl.setHours(0,0,0,0);
     const dlDiff   = dl ? Math.ceil((dl - todayDate) / 86400000) : null;
-    const isUrgent = dlDiff !== null && dlDiff <= 3 && !isDone;
+    const isUrgent = dlDiff !== null && dlDiff <= 3 && !isDone
+      && !['포스팅완료','발송대기','발송완료'].includes(r.status);
 
     // 카드 테두리/불투명도
     const cardStyle = isDone
