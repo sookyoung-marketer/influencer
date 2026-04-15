@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>경리나라 인플루언서</title>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #0F172A;
+  --ink2:   #334155;
+  --ink3:   #64748B;
+  --ink4:   #94A3B8;
+  --paper:  #FFFFFF;
+  --paper2: #F8FAFC;
+  --paper3: #F1F5F9;
+  --line:   #E2E8F0;
+  --line2:  #CBD5E1;
+
+  --blue:   #2563EB;  --blue-l: #EFF6FF;  --blue-d: #1D4ED8;
+  --green:  #059669;  --green-l:#ECFDF5;
+  --amber:  #D97706;  --amber-l:#FFFBEB;
+  --red:    #DC2626;  --red-l:  #FEF2F2;
+  --purple: #7C3AED;  --purple-l:#F5F3FF;
+  --teal:   #0D9488;  --teal-l: #F0FDFA;
+
+  --nv-bg: #DBEAFE; --nv-c: #1E40AF;
+  --ts-bg: #EDE9FE; --ts-c: #4C1D95;
+
+  --r-sm: 4px; --r: 8px; --r-lg: 12px; --r-xl: 16px;
+  --sh: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --sh-md: 0 4px 12px rgba(0,0,0,.1), 0 2px 4px rgba(0,0,0,.06);
+  --sh-lg: 0 10px 32px rgba(0,0,0,.12);
+  --tr: 150ms ease;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Pretendard',sans-serif; background:var(--paper2); color:var(--ink); font-size:13px; line-height:1.5; }
+a { color:var(--blue); text-decoration:none; }
+button,input,select,textarea { font-family:inherit; font-size:13px; }
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--line2); border-radius:3px; }
+
+.hd {
+  background:var(--ink);
+  padding:0 20px;
+  height:52px;
+  display:flex;
+  align-items:center;
+  gap:0;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:var(--sh-md);
+}
+.logo { display:flex; align-items:center; gap:10px; margin-right:20px; text-decoration:none; }
+.logo-mark { width:28px; height:28px; background:var(--blue); border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:#fff; }
+.logo-text { font-size:13px; font-weight:600; color:#F1F5F9; letter-spacing:-.3px; }
+.nav { display:flex; gap:2px; flex:1; }
+.nav-btn { padding:6px 14px; border-radius:var(--r-sm); color:#94A3B8; font-size:12px; font-weight:500; cursor:pointer; border:none; background:transparent; transition:var(--tr); white-space:nowrap; }
+.nav-btn:hover { background:rgba(255,255,255,.08); color:#F1F5F9; }
+.nav-btn.on { background:var(--blue); color:#fff; }
+.nav-btn.bl-tab { color:#FDA4AF; }
+.nav-btn.bl-tab.on { background:var(--red); color:#fff; }
+.hd-actions { margin-left:auto; display:flex; align-items:center; gap:8px; }
+.btn-add { padding:6px 14px; border-radius:var(--r); background:var(--blue); color:#fff; border:none; font-size:12px; font-weight:600; cursor:pointer; transition:var(--tr); display:flex; align-items:center; gap:6px; }
+.btn-add:hover { background:var(--blue-d); }
+
+.main { padding:20px; max-width:1600px; margin:0 auto; }
+.panel { display:none; }
+.panel.on { display:block; }
+
+.stat-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:16px; }
+.stat-card { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-lg); padding:14px 16px; box-shadow:var(--sh); }
+.stat-label { font-size:10px; font-weight:600; color:var(--ink3); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+.stat-value { font-size:24px; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--ink); }
+.stat-value.v-red { color:var(--red); }
+.stat-value.v-green { color:var(--green); }
+.stat-value.v-amber { color:var(--amber); }
+
+.toolbar { display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+.filter-group { display:flex; gap:4px; flex-wrap:wrap; }
+.f-btn { padding:4px 12px; border-radius:20px; border:1px solid var(--line); background:var(--paper); color:var(--ink3); font-size:11px; font-weight:500; cursor:pointer; transition:var(--tr); white-space:nowrap; }
+.f-btn:hover { background:var(--paper3); }
+.f-btn.on { border-color:transparent; }
+.f-all.on   { background:var(--ink);  color:#fff; }
+.f-nv.on    { background:var(--nv-bg); color:var(--nv-c); border-color:#BFDBFE; }
+.f-ts.on    { background:var(--ts-bg); color:var(--ts-c); border-color:#DDD6FE; }
+.f-bl.on    { background:var(--red-l); color:var(--red); border-color:#FECACA; }
+.f-ok.on    { background:var(--green-l); color:var(--green); border-color:#A7F3D0; }
+.f-s-contact.on  { background:#F0F9FF; color:#0C4A6E; border-color:#BAE6FD; }
+.f-s-wait.on     { background:var(--amber-l); color:var(--amber); border-color:#FDE68A; }
+.f-s-confirm.on  { background:var(--green-l); color:var(--green); border-color:#A7F3D0; }
+.f-s-guide.on    { background:var(--blue-l); color:var(--blue); border-color:#BFDBFE; }
+.f-s-post.on     { background:#ECFDF5; color:#064E3B; border-color:#6EE7B7; }
+.f-s-ship.on     { background:#FFF7ED; color:#7C2D12; border-color:#FED7AA; }
+.f-s-done.on     { background:var(--purple-l); color:var(--purple); border-color:#DDD6FE; }
+.f-s-reject.on   { background:var(--red-l); color:var(--red); border-color:#FECACA; }
+.vsep { width:1px; height:20px; background:var(--line); margin:0 2px; }
+.ml { margin-left:auto; }
+.search-input { padding:6px 12px; border:1px solid var(--line2); border-radius:var(--r); background:var(--paper); color:var(--ink); font-size:12px; outline:none; min-width:200px; transition:var(--tr); }
+.search-input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+.cycle-sel { padding:5px 10px; border:1px solid var(--line2); border-radius:var(--r); background:var(--paper); color:var(--ink); font-size:12px; cursor:pointer; outline:none; }
+
+.card { background:var(--paper); border:1px solid var(--line); border-radius:var(--r-xl); overflow:hidden; box-shadow:var(--sh); }
+.card-header { padding:12px 18px; border-bottom:1px solid var(--line); background:var(--paper2); display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.card-title { font-size:13px; font-weight:600; }
+.card-count { font-size:11px; color:var(--ink3); }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:12px; table-layout:fixed; }
+thead th { background:var(--ink); color:#94A3B8; font-weight:500; font-size:10px; padding:9px 12px; text-align:left; white-space:nowrap; border-bottom:1px solid #1E293B; letter-spacing:.5px; text-transform:uppercase; }
+tbody tr { border-bottom:1px solid var(--line); cursor:pointer; transition:background var(--tr); }
+tbody tr:hover { background:var(--blue-l); }
+tbody tr:last-child { border-bottom:none; }
+tbody tr.bl-row { background:var(--red-l); }
+tbody tr.bl-row:hover { background:#FEE2E2; }
+td { padding:9px 12px; vertical-align:middle; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink2); }
+td.mono { font-family:'JetBrains Mono',monospace; font-size:11px; }
+td strong { color:var(--ink); font-weight:600; }
+.empty-row td { text-align:center; padding:40px; color:var(--ink4); }
+
+.badge { display:inline-flex; align-items:center; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:600; white-space:nowrap; }
+.b-nv     { background:var(--nv-bg); color:var(--nv-c); }
+.b-ts     { background:var(--ts-bg); color:var(--ts-c); }
+.b-bl     { background:var(--red-l); color:var(--red); border:1px solid #FECACA; }
+.b-contact{ background:#F0F9FF; color:#0369A1; }
+.b-wait   { background:var(--amber-l); color:var(--amber); }
+.b-confirm{ background:var(--green-l); color:#065F46; }
+.b-guide  { background:var(--blue-l); color:var(--blue); }
+.b-post   { background:#ECFDF5; color:#064E3B; }
+.b-ship   { background:#FFF7ED; color:#7C2D12; }
+.b-done   { background:var(--purple-l); color:var(--purple); }
+.b-reject { background:var(--red-l); color:var(--red); }
+.b-black  { background:#FFF0F0; color:#991B1B; border:1px solid #FECACA; }
+
+.btn-p { padding:6px 14px; border-radius:var(--r); background:var(--blue); color:#fff; border:none; font-size:12px; font-weight:600; cursor:pointer; transition:var(--tr); }
+.btn-p:hover { background:var(--blue-d); }
+.btn-p:disabled { opacity:.5; cursor:not-allowed; }
+.btn-s { padding:6px 14px; border-radius:var(--r); background:var(--paper); color:var(--ink2); border:1px solid var(--line2); font-size:12px; cursor:pointer; transition:var(--tr); }
+.btn-s:hover { background:var(--paper3); }
+.btn-sm { padding:3px 9px; border-radius:var(--r-sm); background:var(--paper); color:var(--ink3); border:1px solid var(--line); font-size:11px; cursor:pointer; transition:var(--tr); }
+.btn-sm:hover { background:var(--paper3); }
+.btn-red { padding:3px 9px; border-radius:var(--r-sm); background:var(--red-l); color:var(--red); border:1px solid #FECACA; font-size:11px; cursor:pointer; transition:var(--tr); }
+.btn-red:hover { background:#FEE2E2; }
+.btn-green { padding:4px 10px; border-radius:var(--r-sm); background:var(--green-l); color:var(--green); border:1px solid #A7F3D0; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-row { display:flex; gap:8px; margin-top:16px; }
+.btn-row .btn-p { flex:1; }
+.qs { padding:3px 7px; border:1px solid var(--line); border-radius:var(--r-sm); font-size:11px; background:var(--paper); color:var(--ink); cursor:pointer; outline:none; }
+.qs:focus { border-color:var(--blue); }
+
+.overlay { position:fixed; inset:0; background:rgba(15,23,42,.4); z-index:200; display:none; justify-content:flex-end; backdrop-filter:blur(2px); }
+.overlay.open { display:flex; }
+.side-panel { width:500px; max-width:100vw; height:100vh; background:var(--paper); overflow-y:auto; box-shadow:var(--sh-lg); display:flex; flex-direction:column; }
+.sp-head { padding:16px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--paper); z-index:10; }
+.sp-title { font-size:15px; font-weight:700; }
+.sp-close { width:30px; height:30px; border:1px solid var(--line); border-radius:var(--r); background:var(--paper2); color:var(--ink3); cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:var(--tr); }
+.sp-close:hover { background:var(--paper3); }
+.sp-body { padding:20px; flex:1; }
+
+.fg { margin-bottom:14px; }
+.fl { display:block; font-size:11px; font-weight:600; color:var(--ink3); margin-bottom:5px; }
+.fl .req { color:var(--red); margin-left:2px; }
+.fc { width:100%; padding:8px 11px; border:1px solid var(--line2); border-radius:var(--r); background:var(--paper); color:var(--ink); font-size:12px; outline:none; transition:var(--tr); }
+.fc:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.1); }
+.fc:read-only { background:var(--paper3); color:var(--ink3); }
+textarea.fc { resize:vertical; min-height:80px; line-height:1.6; }
+select.fc { cursor:pointer; }
+.fr2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.fr3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+
+.plat-group { display:flex; gap:8px; }
+.plat-btn { flex:1; padding:8px; border:1px solid var(--line2); border-radius:var(--r); background:var(--paper); color:var(--ink3); font-size:12px; cursor:pointer; text-align:center; font-weight:500; transition:var(--tr); }
+.plat-btn.nv { background:var(--nv-bg); color:var(--nv-c); border-color:#BFDBFE; }
+.plat-btn.ts { background:var(--ts-bg); color:var(--ts-c); border-color:#DDD6FE; }
+
+.info-box { background:var(--paper2); border:1px solid var(--line); border-radius:var(--r-lg); padding:14px; margin-bottom:14px; }
+.info-box.warn { background:var(--amber-l); border-color:#FDE68A; }
+.info-box.danger { background:var(--red-l); border-color:#FECACA; }
+.info-box .inf-name { font-size:14px; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:12px; }
+.info-grid>div>span { color:var(--ink4); display:block; font-size:10px; margin-bottom:1px; }
+.hist-item { border-left:2px solid var(--line2); padding:8px 12px; margin-bottom:8px; border-radius:0 var(--r) var(--r) 0; background:var(--paper2); font-size:12px; }
+.hist-item.bl { border-color:var(--red); background:var(--red-l); }
+
+.divider { border:none; border-top:1px solid var(--line); margin:16px 0; }
+.sec-title { font-size:11px; font-weight:700; color:var(--ink3); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+.memo-box { background:#FAFAF7; border:1px solid #E8E4D4; border-radius:var(--r); padding:10px 12px; font-size:12px; color:var(--ink2); white-space:pre-wrap; line-height:1.6; margin-top:4px; }
+.detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px; margin-bottom:12px; }
+.detail-grid>div>span { color:var(--ink4); display:block; font-size:10px; margin-bottom:2px; }
+
+.status-steps { display:flex; gap:0; background:var(--paper2); border:1px solid var(--line); border-radius:var(--r-lg); padding:12px; margin-bottom:16px; overflow-x:auto; }
+.step { display:flex; flex-direction:column; align-items:center; flex:1; min-width:64px; position:relative; }
+.step:not(:last-child)::after { content:''; position:absolute; top:14px; right:-50%; width:100%; height:1px; background:var(--line); z-index:0; }
+.step-dot { width:28px; height:28px; border-radius:50%; border:2px solid var(--line); background:var(--paper); z-index:1; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; transition:var(--tr); }
+.step.done .step-dot { background:var(--green); border-color:var(--green); color:#fff; }
+.step.current .step-dot { background:var(--blue); border-color:var(--blue); color:#fff; box-shadow:0 0 0 3px rgba(37,99,235,.2); }
+.step-label { font-size:9px; color:var(--ink4); margin-top:4px; text-align:center; }
+.step.done .step-label, .step.current .step-label { color:var(--ink2); font-weight:600; }
+
+.toast-c { position:fixed; bottom:20px; right:20px; z-index:300; display:flex; flex-direction:column; gap:6px; }
+.toast { background:var(--paper); border:1px solid var(--line); padding:10px 16px; border-radius:var(--r-lg); font-size:12px; box-shadow:var(--sh-md); display:flex; align-items:center; gap:8px; max-width:320px; animation:slideIn .2s ease; }
+.toast.ok  { border-color:var(--green); color:#065F46; background:var(--green-l); }
+.toast.err { border-color:var(--red);   color:var(--red); background:var(--red-l); }
+@keyframes slideIn { from { transform:translateX(20px); opacity:0; } to { transform:none; opacity:1; } }
+
+@media(max-width:768px) {
+  .main { padding:12px; }
+  .fr2, .fr3 { grid-template-columns:1fr; }
+  .side-panel { width:100vw; }
+  .stat-row { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <a class="logo" href="#">
+    <div class="logo-mark">K</div>
+    <span class="logo-text">인플루언서 관리</span>
+  </a>
+  <nav class="nav">
+    <button class="nav-btn on"  onclick="switchTab('all',this)">전체 인플루언서</button>
+    <button class="nav-btn"     onclick="switchTab('cyc',this)">차수별 운영</button>
+    <button class="nav-btn"     onclick="switchTab('ship',this)">발송 필요</button>
+    <button class="nav-btn"     onclick="switchTab('done',this)">발송 완료</button>
+    <button class="nav-btn bl-tab" onclick="switchTab('black',this)">블랙리스트</button>
+    <button class="nav-btn"    onclick="switchTab('guide',this)">가이드</button>
+  </nav>
+  <div class="hd-actions">
+    <button onclick="loadAll()" title="새로고침" style="width:32px;height:32px;border-radius:var(--r);border:1px solid #334155;background:#1E293B;color:#94A3B8;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:var(--tr)" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#1E293B'">↻</button>
+    <button class="btn-add" onclick="openAddPanel()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      인플루언서 등록
+    </button>
+  </div>
+</header>
+
+<div class="main">
+
+<div id="tab-all" class="panel on">
+  <div class="stat-row" id="all-stats"></div>
+  <div class="toolbar">
+    <div class="filter-group" id="all-pf">
+      <button class="f-btn f-all on" onclick="setFilter('allPF','all',this,'all-pf')">전체</button>
+      <button class="f-btn f-nv"  onclick="setFilter('allPF','네이버 블로그',this,'all-pf')">네이버</button>
+      <button class="f-btn f-ts"  onclick="setFilter('allPF','티스토리',this,'all-pf')">티스토리</button>
+    </div>
+    <div class="vsep"></div>
+    <div class="filter-group" id="all-bf">
+      <button class="f-btn f-all on" onclick="setFilter('allBL','all',this,'all-bf')">전체</button>
+      <button class="f-btn f-bl"  onclick="setFilter('allBL','Y',this,'all-bf')">블랙리스트</button>
+      <button class="f-btn f-ok"  onclick="setFilter('allBL','N',this,'all-bf')">정상</button>
+    </div>
+    <input class="search-input ml" id="all-q" placeholder="닉네임 / 이메일 / 블로그ID 검색..." oninput="renderAll()">
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">인플루언서 목록</span>
+      <span class="card-count" id="all-cnt"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:70px"><col style="width:110px"><col style="width:180px">
+          <col style="width:80px"><col style="width:80px"><col style="width:65px">
+          <col style="width:80px"><col style="width:90px"><col style="width:90px"><col style="width:110px">
+        </colgroup>
+        <thead><tr>
+          <th>플랫폼</th><th>닉네임</th><th>이메일</th>
+          <th>카테고리</th><th>방문자수</th><th>협업수</th>
+          <th>평균단가</th><th>최근 차수</th><th>최근 상태</th><th>액션</th>
+        </tr></thead>
+        <tbody id="all-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="tab-cyc" class="panel">
+  <div class="stat-row" id="cyc-stats"></div>
+  <div class="toolbar">
+    <select class="cycle-sel" id="cyc-sel" onchange="onCycleChange()"></select>
+    <div class="vsep"></div>
+    <div class="filter-group" id="cyc-sf">
+      <button class="f-btn f-all on" onclick="setFilter('cycSF','all',this,'cyc-sf')">전체</button>
+      <button class="f-btn f-s-contact" onclick="setFilter('cycSF','컨택완료',this,'cyc-sf')">컨택완료</button>
+      <button class="f-btn f-s-wait"    onclick="setFilter('cycSF','답변대기',this,'cyc-sf')">답변대기</button>
+      <button class="f-btn f-s-confirm" onclick="setFilter('cycSF','진행확정',this,'cyc-sf')">진행확정</button>
+      <button class="f-btn f-s-guide"   onclick="setFilter('cycSF','가이드발송',this,'cyc-sf')">가이드발송</button>
+      <button class="f-btn f-s-post"    onclick="setFilter('cycSF','포스팅완료',this,'cyc-sf')">포스팅완료</button>
+      <button class="f-btn f-s-ship"    onclick="setFilter('cycSF','발송대기',this,'cyc-sf')">발송대기</button>
+      <button class="f-btn f-s-done"    onclick="setFilter('cycSF','발송완료',this,'cyc-sf')">발송완료</button>
+      <button class="f-btn f-s-reject"  onclick="setFilter('cycSF','거절',this,'cyc-sf')">거절</button>
+    </div>
+    <div class="vsep"></div>
+    <div class="filter-group" id="cyc-pf">
+      <button class="f-btn f-nv on" id="cyc-nv" onclick="togglePlatF('cyc','네이버 블로그',this)">네이버</button>
+      <button class="f-btn f-ts on" id="cyc-ts" onclick="togglePlatF('cyc','티스토리',this)">티스토리</button>
+    </div>
+    <button class="btn-add ml" style="font-size:12px;padding:5px 12px;" onclick="openAddPanel()">+ 이번 차수 등록</button>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title" id="cyc-title">차수 운영</span>
+      <span class="card-count" id="cyc-cnt"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:70px"><col style="width:110px"><col style="width:160px">
+          <col style="width:80px"><col style="width:90px"><col style="width:80px">
+          <col style="width:90px"><col style="width:100px"><col style="width:120px">
+        </colgroup>
+        <thead><tr>
+          <th>플랫폼</th><th>닉네임</th><th>이메일</th>
+          <th>제안금액</th><th>진행상태</th><th>가이드</th>
+          <th>포스팅마감</th><th>상품권발송</th><th>상태변경</th>
+        </tr></thead>
+        <tbody id="cyc-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="tab-ship" class="panel">
+  <div class="toolbar">
+    <select class="cycle-sel" id="ship-sel" onchange="renderShip()">
+      <option value="all">전체 차수</option>
+    </select>
+    <div class="vsep"></div>
+    <div class="filter-group" id="ship-pf">
+      <button class="f-btn f-nv on" id="ship-nv" onclick="togglePlatF('ship','네이버 블로그',this)">네이버</button>
+      <button class="f-btn f-ts on" id="ship-ts" onclick="togglePlatF('ship','티스토리',this)">티스토리</button>
+    </div>
+    <button class="btn-s ml" onclick="exportShipCSV()" style="font-size:12px;">📋 발송요청서 내보내기</button>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">상품권 발송 필요</span>
+      <span class="card-count" id="ship-cnt"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:110px"><col style="width:70px"><col style="width:110px">
+          <col style="width:90px"><col style="width:80px"><col style="width:100px">
+          <col style="width:120px"><col style="width:180px"><col style="width:90px">
+        </colgroup>
+        <thead><tr>
+          <th>차수</th><th>플랫폼</th><th>닉네임</th>
+          <th>실명</th><th>확정금액</th><th>연락처</th>
+          <th>포스팅URL</th><th>진행상태</th><th>발송처리</th>
+        </tr></thead>
+        <tbody id="ship-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="tab-done" class="panel">
+  <div class="toolbar">
+    <select class="cycle-sel" id="done-sel" onchange="renderDone()">
+      <option value="all">전체 차수</option>
+    </select>
+    <div class="vsep"></div>
+    <div class="filter-group" id="done-pf">
+      <button class="f-btn f-nv on" id="done-nv" onclick="togglePlatF('done','네이버 블로그',this)">네이버</button>
+      <button class="f-btn f-ts on" id="done-ts" onclick="togglePlatF('done','티스토리',this)">티스토리</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">발송 완료</span>
+      <span class="card-count" id="done-cnt"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:110px"><col style="width:70px"><col style="width:110px">
+          <col style="width:90px"><col style="width:80px"><col style="width:120px">
+          <col style="width:180px"><col style="width:90px">
+        </colgroup>
+        <thead><tr>
+          <th>차수</th><th>플랫폼</th><th>닉네임</th>
+          <th>실명</th><th>확정금액</th><th>연락처</th>
+          <th>포스팅URL</th><th>발송일</th>
+        </tr></thead>
+        <tbody id="done-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="tab-black" class="panel">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title" style="color:var(--red)">블랙리스트</span>
+      <span class="card-count" id="black-cnt"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:70px"><col style="width:110px"><col style="width:160px">
+          <col style="width:130px"><col style="width:240px"><col style="width:60px"><col style="width:90px">
+        </colgroup>
+        <thead><tr>
+          <th>플랫폼</th><th>닉네임</th><th>이메일</th>
+          <th>블랙 사유</th><th>메모</th><th>협업수</th><th>액션</th>
+        </tr></thead>
+        <tbody id="black-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="tab-guide" class="panel">
+  <div class="toolbar">
+    <button class="btn-add" style="font-size:12px;padding:5px 14px;" onclick="openGuideAddPanel()">+ 가이드 등록</button>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">가이드 목록</span>
+      <span class="card-count" id="guide-cnt"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <colgroup>
+          <col style="width:75px"><col style="width:120px"><col style="width:120px">
+          <col style="width:160px"><col style="width:220px"><col style="width:auto">
+        </colgroup>
+        <thead><tr>
+          <th>가이드ID</th><th>차수</th><th>노션 링크</th>
+          <th>메인 키워드</th><th>서브 키워드</th><th>사용 블로거</th>
+        </tr></thead>
+        <tbody id="guide-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="overlay" id="overlay" onclick="closeIfOut(event)">
+  <div class="side-panel" id="sp">
+    <div class="sp-head">
+      <span class="sp-title" id="sp-title">등록</span>
+      <button class="sp-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="sp-body" id="sp-body"></div>
+  </div>
+</div>
+
+<div class="toast-c" id="tc"></div>
+
+<script>
+// ════════════════════════════════════════════════════
+// ★ 여기에 Apps Script 배포 URL을 붙여넣으세요 ★
+// ════════════════════════════════════════════════════
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUJeJ1xjSSsyWiws0xS_7yIvfA9XDuFegDuZ8RdTULc5OKxewTKpXpumItOh7ifMboaA/exec';
+
+// GET 래퍼
+async function apiGet(action) {
+  const res = await fetch(`${SCRIPT_URL}?action=${action}`);
+  return res.json();
+}
+
+// POST 래퍼
+async function apiPost(payload) {
+  const res = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return res.json();
+}
+
+// ── 상수 ──────────────────────────────────────────
+const STATUSES = ['컨택완료','답변대기','진행확정','가이드발송','포스팅완료','발송대기','발송완료','거절','블랙리스트'];
+const STATUS_BADGE = {
+  '컨택완료':'b-contact', '답변대기':'b-wait', '진행확정':'b-confirm',
+  '가이드발송':'b-guide', '포스팅완료':'b-post', '발송대기':'b-ship',
+  '발송완료':'b-done', '거절':'b-reject', '블랙리스트':'b-black'
+};
+const STATUS_STEPS = ['컨택완료','답변대기','진행확정','가이드발송','포스팅완료','발송대기','발송완료'];
+const BL_REASONS = ['단가 상향 요청','미발행 (발행 약속 불이행)','읽씹 (읽고 무응답)','안읽씹 (미열람)','포스팅 품질 불량','기타'];
+const CATEGORIES = ['IT/테크','마케팅','경제/재테크','일상/라이프','정보성','기타'];
+const FEES = ['50,000','100,000','150,000','200,000'];
+
+// ── 상태 ──────────────────────────────────────────
+let _rows = [];
+let _summary = [];
+let _guides = [];
+let _cycles = [];
+let _curCycle = '';
+let _editRow = null;
+let _currentEditEmail = '';
+let _loadToken = 0;
+
+const F = {
+  allPF:'all', allBL:'all',
+  cycSF:'all', cycPF:new Set(['네이버 블로그','티스토리']),
+  shipPF:new Set(['네이버 블로그','티스토리']),
+  donePF:new Set(['네이버 블로그','티스토리']),
+};
+
+// ── 패널 전환 버그 방지 플래그 ──────────────────────
+let _panelTransitioning = false;
+
+// ── 초기화 ────────────────────────────────────────
+window.onload = () => loadAll();
+
+function loadAll() {
+  _loadToken++;
+  const token = _loadToken;
+
+  const loadMsg = '<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--ink4)">불러오는 중...</td></tr>';
+  ['all-body','cyc-body','ship-body','done-body','black-body'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = loadMsg;
+  });
+
+  Promise.all([
+    apiGet('getAllRows'),
+    apiGet('getGuides')
+  ]).then(([rows, guides]) => {
+    if (token !== _loadToken) return;
+    _rows   = Array.isArray(rows)   ? rows.filter(r => r && r.email) : [];
+    _guides = Array.isArray(guides) ? guides : [];
+    _afterLoad();
+  }).catch(err => {
+    toast('데이터 로드 실패: ' + err, 'err');
+  });
+}
+
+function _afterLoad() {
+  _summary  = _buildSummary(_rows);
+  _cycles   = [...new Set(_rows.map(r => r.cycle).filter(Boolean))].sort().reverse();
+  _curCycle = _cycles[0] || '';
+  _buildCycleSels();
+  renderAll();
+  renderCyc();
+  renderShip();
+  renderDone();
+  renderBlack();
+  renderGuide();
+}
+
+function _buildSummary(rows) {
+  const map = {};
+  rows.forEach(r => {
+    if (!r.email) return;
+    const k = r.email.toLowerCase();
+    if (!map[k]) {
+      map[k] = {
+        email: r.email, nick: r.nick || '', platform: r.platform || '네이버 블로그',
+        category: r.category || '', visitors: r.visitors || '',
+        blogUrl: r.blogUrl || '', black: r.black || 'N',
+        blackReason: r.blackReason || '', memo: r.memo || '',
+        collabCount: 0, fees: [], latestCycle: '', latestStatus: '', rowIndex: r.rowIndex
+      };
+    }
+    const inf = map[k];
+    if (r.nick)     inf.nick       = r.nick;
+    if (r.platform) inf.platform   = r.platform;
+    if (r.blogUrl)  inf.blogUrl    = r.blogUrl;
+    if (r.memo)     inf.memo       = r.memo;
+    if (r.black === 'Y') { inf.black = 'Y'; inf.blackReason = r.blackReason || ''; }
+    if (r.cycle && r.cycle.trim()) {
+      inf.collabCount++;
+      inf.latestCycle  = r.cycle;
+      inf.latestStatus = r.status || '';
+      const fee = Number(String(r.confirmFee || r.proposeFee || '0').replace(/[^0-9]/g,''));
+      if (fee > 0) inf.fees.push(fee);
+    }
+  });
+  return Object.values(map).map(inf => ({
+    ...inf,
+    avgFee: inf.fees.length ? Math.round(inf.fees.reduce((a,b)=>a+b,0)/inf.fees.length) : 0
+  }));
+}
+
+function _buildCycleSels() {
+  ['cyc-sel','ship-sel','done-sel'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const base = id==='cyc-sel' ? '' : '<option value="all">전체 차수</option>';
+    sel.innerHTML = base + _cycles.map(c=>`<option value="${c}">${c}</option>`).join('');
+    if (id==='cyc-sel') sel.value = _curCycle;
+  });
+}
+
+function onCycleChange() {
+  _curCycle = document.getElementById('cyc-sel').value;
+  F.cycSF = 'all';
+  document.querySelectorAll('#cyc-sf .f-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelector('#cyc-sf .f-all').classList.add('on');
+  renderCyc();
+}
+
+function switchTab(id, el) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+id).classList.add('on');
+  el.classList.add('on');
+  closePanel();
+}
+
+function setFilter(key, val, el, grpId) {
+  F[key] = val;
+  document.querySelectorAll('#'+grpId+' .f-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  if (key==='allPF'||key==='allBL') renderAll();
+  if (key==='cycSF') renderCyc();
+}
+function togglePlatF(tab, val, el) {
+  const set = F[tab+'PF'];
+  if (set.has(val)) set.delete(val); else set.add(val);
+  el.classList.toggle('on', set.has(val));
+  if (tab==='cyc')  renderCyc();
+  if (tab==='ship') renderShip();
+  if (tab==='done') renderDone();
+}
+
+function sbadge(s) { return `<span class="badge ${STATUS_BADGE[s]||''}">${s}</span>`; }
+function pbadge(p) {
+  return p==='티스토리'
+    ? '<span class="badge b-ts">티스토리</span>'
+    : '<span class="badge b-nv">네이버</span>';
+}
+function feeStr(f) { return f ? Number(f).toLocaleString()+'원' : '—'; }
+function rowsOf(email) { return _rows.filter(r=>r.email.toLowerCase()===email.toLowerCase()); }
+function qsel(rowIndex, status) {
+  return `<select class="qs" onchange="quickStatus(${rowIndex},this.value)" onclick="event.stopPropagation()">
+    ${STATUSES.map(s=>`<option${s===status?' selected':''}>${s}</option>`).join('')}
+  </select>`;
+}
+
+// ── 렌더: 전체 인플루언서 ─────────────────────────
+function renderAll() {
+  const q = (document.getElementById('all-q')||{}).value?.toLowerCase()||'';
+  const rows = _summary.filter(i => {
+    const plat = i.platform || '네이버 블로그';
+    if (F.allPF!=='all' && plat!==F.allPF) return false;
+    if (F.allBL!=='all' && (i.black||'N')!==F.allBL) return false;
+    if (q && !String(i.nick||'').toLowerCase().includes(q) && !String(i.email||'').toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const blCnt = _summary.filter(i=>i.black==='Y').length;
+  document.getElementById('all-stats').innerHTML = [
+    {l:'전체',    v:_summary.length},
+    {l:'블랙리스트',v:blCnt, cls:'v-red'},
+    {l:'네이버',  v:_summary.filter(i=>i.platform==='네이버 블로그').length},
+    {l:'티스토리',v:_summary.filter(i=>i.platform==='티스토리').length},
+  ].map(x=>`<div class="stat-card"><div class="stat-label">${x.l}</div><div class="stat-value ${x.cls||''}">${x.v}</div></div>`).join('');
+  document.getElementById('all-cnt').textContent = `${rows.length}명`;
+  const b = document.getElementById('all-body');
+  if (!rows.length) { b.innerHTML=`<tr class="empty-row"><td colspan="10">조건에 맞는 인플루언서가 없습니다.</td></tr>`; return; }
+  b.innerHTML = rows.map(i => {
+    const isbl = i.black==='Y';
+    return `<tr class="${isbl?'bl-row':''}" onclick="openInfDetail('${i.email}')">
+      <td>${pbadge(i.platform)}</td>
+      <td style="white-space:nowrap"><strong>${i.nick}</strong>${isbl?' <span class="badge b-bl" style="font-size:9px;vertical-align:middle">블랙</span>':''}</td>
+      <td class="mono" style="font-size:11px">${i.email}</td>
+      <td>${i.category||'—'}</td>
+      <td>${i.visitors||'—'}</td>
+      <td style="text-align:center;font-weight:700">${i.collabCount}</td>
+      <td class="mono">${i.avgFee?i.avgFee.toLocaleString()+'원':'—'}</td>
+      <td style="font-size:11px">${i.latestCycle||'—'}</td>
+      <td>${i.latestStatus?sbadge(i.latestStatus):'—'}</td>
+      <td onclick="event.stopPropagation()"><div style="display:flex;gap:4px">
+        ${isbl?`<button class="btn-sm" onclick="doRemoveBL('${i.email}')">해제</button>`:
+               `<button class="btn-red" onclick="openBLForm('${i.email}')">블랙지정</button>`}
+        <button class="btn-sm" onclick="openAddFromInf('${i.email}')">협업추가</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── 렌더: 차수별 운영 ─────────────────────────────
+function renderCyc() {
+  const sel = document.getElementById('cyc-sel');
+  if (sel) _curCycle = sel.value;
+  document.getElementById('cyc-title').textContent = (_curCycle||'') + ' 운영 현황';
+  const all = _rows.filter(r=>r.cycle===_curCycle);
+  const rows = all.filter(r => {
+    if (F.cycSF!=='all' && r.status!==F.cycSF) return false;
+    if (!F.cycPF.has(r.platform||'네이버 블로그')) return false;
+    return true;
+  });
+  const sc = {};
+  STATUSES.forEach(s=>sc[s]=0);
+  all.forEach(r=>{ if(sc[r.status]!==undefined) sc[r.status]++; });
+  document.getElementById('cyc-stats').innerHTML = [
+    {l:'총 컨택',    v:all.length},
+    {l:'진행확정',   v:(sc['진행확정']||0)+(sc['가이드발송']||0)+(sc['포스팅완료']||0)+(sc['발송대기']||0)+(sc['발송완료']||0), cls:'v-green'},
+    {l:'포스팅완료', v:sc['포스팅완료']||0},
+    {l:'발송대기',   v:sc['발송대기']||0, cls:'v-amber'},
+    {l:'발송완료',   v:sc['발송완료']||0},
+    {l:'거절',       v:(sc['거절']||0)+(sc['블랙리스트']||0), cls:'v-red'},
+  ].map(x=>`<div class="stat-card"><div class="stat-label">${x.l}</div><div class="stat-value ${x.cls||''}">${x.v}</div></div>`).join('');
+  document.getElementById('cyc-cnt').textContent = `${rows.length}명 / 총 ${all.length}명`;
+  const b = document.getElementById('cyc-body');
+  if (!rows.length) { b.innerHTML=`<tr class="empty-row"><td colspan="9">해당 조건의 데이터가 없습니다.</td></tr>`; return; }
+  b.innerHTML = rows.map(r => {
+    const isbl = r.black==='Y';
+    return `<tr class="${isbl?'bl-row':''}" onclick="openRowDetail(${r.rowIndex})">
+      <td>${pbadge(r.platform||'네이버 블로그')}</td>
+      <td style="white-space:nowrap"><strong>${r.nick}</strong>${isbl?' <span class="badge b-bl" style="font-size:9px;vertical-align:middle">블랙</span>':''}</td>
+      <td class="mono" style="font-size:11px">${r.email}</td>
+      <td class="mono">${feeStr(r.proposeFee)}</td>
+      <td>${sbadge(r.status)}</td>
+      <td style="font-size:11px">${r.guideId?`<span style="font-weight:600;color:var(--purple)">${r.guideId}</span>`:'—'}</td>
+      <td style="font-size:11px">${r.deadline||'—'}</td>
+      <td>${r.sent==='Y'?'<span class="badge b-done">완료</span>':'<span class="badge b-ship">대기</span>'}</td>
+      <td onclick="event.stopPropagation()">${qsel(r.rowIndex,r.status)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── 렌더: 발송 필요 ───────────────────────────────
+function renderShip() {
+  const sc = document.getElementById('ship-sel')?.value||'all';
+  const rows = _rows.filter(r => {
+    if (r.sent!=='N') return false;
+    if (!['포스팅완료','발송대기'].includes(r.status)) return false;
+    if (!F.shipPF.has(r.platform||'네이버 블로그')) return false;
+    if (sc!=='all' && r.cycle!==sc) return false;
+    return true;
+  });
+  document.getElementById('ship-cnt').textContent = `${rows.length}건`;
+  const b = document.getElementById('ship-body');
+  if (!rows.length) { b.innerHTML=`<tr class="empty-row"><td colspan="9">발송 대기 건이 없습니다.</td></tr>`; return; }
+  b.innerHTML = rows.map(r => `<tr onclick="openRowDetail(${r.rowIndex})">
+    <td style="font-size:11px">${r.cycle}</td>
+    <td>${pbadge(r.platform||'네이버 블로그')}</td>
+    <td><strong>${r.nick}</strong></td>
+    <td>${r.realName||'<span style="color:var(--ink4)">미수집</span>'}</td>
+    <td class="mono">${feeStr(r.confirmFee||r.proposeFee)}</td>
+    <td class="mono" style="font-size:11px">${r.phone||'—'}</td>
+    <td style="font-size:11px">${r.postUrl?`<a href="${r.postUrl}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue)">보기 →</a>`:'—'}</td>
+    <td>${sbadge(r.status)}</td>
+    <td onclick="event.stopPropagation()">
+      <button class="btn-green" onclick="doMarkSent(${r.rowIndex})">발송처리</button>
+    </td>
+  </tr>`).join('');
+}
+
+// ── 렌더: 발송 완료 ───────────────────────────────
+function renderDone() {
+  const sc = document.getElementById('done-sel')?.value||'all';
+  const rows = _rows.filter(r => {
+    if (r.sent!=='Y') return false;
+    if (!F.donePF.has(r.platform||'네이버 블로그')) return false;
+    if (sc!=='all' && r.cycle!==sc) return false;
+    return true;
+  });
+  document.getElementById('done-cnt').textContent = `${rows.length}건`;
+  const b = document.getElementById('done-body');
+  if (!rows.length) { b.innerHTML=`<tr class="empty-row"><td colspan="8">발송 완료 건이 없습니다.</td></tr>`; return; }
+  b.innerHTML = rows.map(r => `<tr onclick="openRowDetail(${r.rowIndex})">
+    <td style="font-size:11px">${r.cycle}</td>
+    <td>${pbadge(r.platform||'네이버 블로그')}</td>
+    <td><strong>${r.nick}</strong></td>
+    <td>${r.realName||'—'}</td>
+    <td class="mono">${feeStr(r.confirmFee||r.proposeFee)}</td>
+    <td class="mono" style="font-size:11px">${r.phone||'—'}</td>
+    <td style="font-size:11px">${r.postUrl?`<a href="${r.postUrl}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue)">보기 →</a>`:'—'}</td>
+    <td style="font-size:11px">${r.sentDate||'—'}</td>
+  </tr>`).join('');
+}
+
+// ── 렌더: 블랙리스트 ──────────────────────────────
+function renderBlack() {
+  const bls = _summary.filter(i=>i.black==='Y');
+  document.getElementById('black-cnt').textContent = `${bls.length}명`;
+  const b = document.getElementById('black-body');
+  if (!bls.length) { b.innerHTML=`<tr class="empty-row"><td colspan="7">블랙리스트가 비어 있습니다.</td></tr>`; return; }
+  b.innerHTML = bls.map(i => `<tr class="bl-row" onclick="openInfDetail('${i.email}')">
+    <td>${pbadge(i.platform)}</td>
+    <td><strong>${i.nick}</strong></td>
+    <td class="mono" style="font-size:11px">${i.email}</td>
+    <td><span class="badge b-black" style="font-size:10px">${i.blackReason||'사유 없음'}</span></td>
+    <td style="font-size:11px;color:var(--ink3)">${i.memo||'—'}</td>
+    <td style="text-align:center;font-weight:700">${i.collabCount}</td>
+    <td onclick="event.stopPropagation()">
+      <button class="btn-sm" onclick="doRemoveBL('${i.email}')">해제</button>
+    </td>
+  </tr>`).join('');
+}
+
+// ── 빠른 상태 변경 ─────────────────────────────────
+function quickStatus(rowIndex, val) {
+  if (val === '가이드발송') { openGuideForm(rowIndex, val); return; }
+  if (val === '포스팅완료') { openPostForm(rowIndex, val); return; }
+  if (val === '발송대기')   { openShipReadyForm(rowIndex, val); return; }
+
+  const row = _rows.find(r => r.rowIndex === rowIndex);
+  const prevStatus = row ? row.status : '';
+  if (row) {
+    row.status = val;
+    if (val === '발송완료') { row.sent = 'Y'; row.sentDate = _today(); }
+  }
+  _summary = _buildSummary(_rows);
+  renderCyc(); renderShip(); renderDone(); renderBlack(); renderAll();
+
+  apiPost({ action: 'updateStatus', rowIndex, status: val, extra: null })
+    .then(() => { toast('→ ' + val, 'ok'); loadAll(); })
+    .catch(e => {
+      toast('저장 오류: ' + e, 'err');
+      if (row) row.status = prevStatus;
+      _summary = _buildSummary(_rows);
+      renderCyc();
+    });
+}
+
+// ── 발송대기 전환 시 폼 ────────────────────────────
+function openShipReadyForm(rowIndex, newStatus) {
+  const r = _rows.find(x => x.rowIndex === rowIndex);
+  if (!r) return;
+  document.getElementById('sp-title').textContent = '발송 정보 입력';
+  document.getElementById('sp-body').innerHTML = `
+    <div class="info-box" style="margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:4px">${r.nick}</div>
+      <div style="font-size:11px;color:var(--ink3)">${r.cycle} — 상품권 발송에 필요한 정보를 입력하세요.</div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">실명 (입금자명) <span class="req">*</span></label>
+        <input class="fc" id="sr-name" value="${r.realName||''}" placeholder="홍길동">
+      </div>
+      <div class="fg"><label class="fl">연락처 <span class="req">*</span></label>
+        <input class="fc" id="sr-phone" value="${r.phone||''}" placeholder="010-0000-0000">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">확정금액 (원)</label>
+      <select class="fc" id="sr-fee">
+        <option value="">제안금액과 동일 (${feeStr(r.proposeFee)})</option>
+        ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.confirmFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
+      </select>
+    </div>
+    <div class="fg"><label class="fl">포스팅 URL</label>
+      <input class="fc" id="sr-url" value="${r.postUrl||''}" placeholder="https://blog.naver.com/...">
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closePanel()">취소</button>
+      <button class="btn-p" onclick="saveShipReady(${rowIndex},'${newStatus}')">저장</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function saveShipReady(rowIndex, newStatus) {
+  const realName   = (document.getElementById('sr-name')||{}).value?.trim();
+  const phone      = (document.getElementById('sr-phone')||{}).value?.trim();
+  const confirmFee = (document.getElementById('sr-fee')||{}).value||'';
+  const postUrl    = (document.getElementById('sr-url')||{}).value?.trim()||'';
+  if (!realName || !phone) { toast('실명과 연락처는 필수입니다.', 'err'); return; }
+
+  const row = _rows.find(r => r.rowIndex === rowIndex);
+  if (row) {
+    row.status = newStatus; row.realName = realName; row.phone = phone;
+    if (confirmFee) row.confirmFee = confirmFee;
+    if (postUrl) row.postUrl = postUrl;
+  }
+  _summary = _buildSummary(_rows);
+  renderCyc(); renderShip(); renderDone();
+  closePanel();
+  toast('→ ' + newStatus, 'ok');
+
+  apiPost({ action: 'updateStatus', rowIndex, status: newStatus, extra: {realName, phone, confirmFee, postUrl} })
+    .then(() => { loadAll(); })
+    .catch(e => { toast('저장 오류: ' + e, 'err'); loadAll(); });
+}
+
+// ── 발송 처리 ──────────────────────────────────────
+function doMarkSent(rowIndex) {
+  if (!confirm('발송 처리하시겠습니까?')) return;
+  apiPost({ action: 'markAsSent', rowIndices: [rowIndex] })
+    .then(() => { toast('발송 완료 처리됨', 'ok'); loadAll(); })
+    .catch(e => toast('오류: ' + e, 'err'));
+}
+
+// ── 블랙리스트 ─────────────────────────────────────
+function openBLForm(email) {
+  const inf = _summary.find(i=>i.email===email) || {};
+  document.getElementById('sp-title').textContent = inf.nick + ' 블랙리스트 지정';
+  document.getElementById('sp-body').innerHTML = `
+    <div class="info-box danger" style="margin-bottom:16px">
+      <div style="font-weight:600;margin-bottom:4px">⚠ 블랙리스트 지정</div>
+      <div style="font-size:12px;color:var(--red)">지정 후 차수 등록 시 경고가 표시됩니다.</div>
+    </div>
+    <div class="fg"><label class="fl">블랙리스트 사유 <span class="req">*</span></label>
+      <select class="fc" id="bl-sel" onchange="toggleBLCustom(this.value)">
+        <option value="">선택...</option>
+        ${BL_REASONS.map(r=>`<option>${r}</option>`).join('')}
+      </select>
+    </div>
+    <div class="fg" id="bl-custom-wrap" style="display:none">
+      <label class="fl">직접 입력</label>
+      <input class="fc" id="bl-custom" placeholder="사유 직접 입력">
+    </div>
+    <div class="fg"><label class="fl">상세 메모 (선택)</label>
+      <textarea class="fc" id="bl-memo" placeholder="단가 금액, 구체적 경위 등 상세 내용...">${inf.memo||''}</textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closePanel()">취소</button>
+      <button style="padding:7px 14px;border-radius:var(--r);background:var(--red);color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer;flex:1" onclick="doSetBL('${email}')">블랙리스트 지정</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+function toggleBLCustom(v) {
+  document.getElementById('bl-custom-wrap').style.display = v==='기타' ? '' : 'none';
+}
+function doSetBL(email) {
+  const sel = document.getElementById('bl-sel').value;
+  const custom = document.getElementById('bl-custom')?.value||'';
+  const memo = document.getElementById('bl-memo')?.value||'';
+  const reason = sel==='기타' ? custom : sel;
+  if (!reason) { toast('사유를 선택하거나 입력해주세요.','err'); return; }
+  apiPost({ action: 'setBlacklist', email, reason, memo })
+    .then(() => { closePanel(); toast('블랙리스트 지정 완료', 'ok'); loadAll(); })
+    .catch(e => toast('오류: ' + e, 'err'));
+}
+function doRemoveBL(email) {
+  if (!confirm('블랙리스트에서 해제하시겠습니까?')) return;
+  apiPost({ action: 'removeBlacklist', email })
+    .then(() => { toast('블랙리스트 해제', 'ok'); loadAll(); })
+    .catch(e => toast('오류: ' + e, 'err'));
+}
+
+// ── 인플루언서 상세 패널 ───────────────────────────
+function openInfDetail(email) {
+  const inf = _summary.find(i=>i.email===email) || {};
+  const hist = rowsOf(email);
+  document.getElementById('sp-title').textContent = inf.nick + ' 상세';
+  document.getElementById('sp-body').innerHTML = `
+    <div class="info-box${inf.black==='Y'?' danger':''}">
+      <div class="inf-name">
+        ${pbadge(inf.platform)}
+        <span>${inf.nick}</span>
+        ${inf.black==='Y'?'<span class="badge b-bl">블랙리스트</span>':''}
+      </div>
+      <div class="info-grid">
+        <div><span>이메일</span>${inf.email}</div>
+        <div><span>카테고리</span>${inf.category||'—'}</div>
+        <div><span>방문자수</span>${inf.visitors||'—'}</div>
+        <div><span>블로그</span>${inf.blogUrl?`<a href="${inf.blogUrl}" target="_blank">링크 →</a>`:'—'}</div>
+        <div><span>총 협업</span><strong>${inf.collabCount}회</strong></div>
+        <div><span>평균 단가</span><strong>${inf.avgFee?inf.avgFee.toLocaleString()+'원':'—'}</strong></div>
+      </div>
+      ${inf.blackReason?`<div style="margin-top:10px;font-size:12px;font-weight:600;color:var(--red)">블랙 사유: ${inf.blackReason}</div>`:''}
+      ${inf.memo?`<div style="margin-top:8px"><div class="memo-box">${inf.memo}</div></div>`:''}
+    </div>
+    <hr class="divider">
+    <div class="sec-title">전체 협업 이력 (${hist.length}건)</div>
+    ${hist.length ? [...hist].reverse().map(r=>`
+      <div class="hist-item${inf.black==='Y'?' bl':''}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          ${sbadge(r.status)}
+          <strong style="font-size:12px">${r.cycle||'차수 없음'}</strong>
+          <span class="mono" style="font-size:11px">${feeStr(r.proposeFee)}</span>
+          ${r.confirmFee&&r.confirmFee!=r.proposeFee?`<span style="font-size:10px;color:var(--ink3)">→ 확정 ${feeStr(r.confirmFee)}</span>`:''}
+        </div>
+        ${r.guideId?`<div style="font-size:11px;color:var(--ink3)">가이드: <strong>${r.guideId}</strong>${r.deadline?' | 마감: '+r.deadline:''}</div>`:''}
+        ${r.postUrl?`<div style="font-size:11px;margin-top:3px"><a href="${r.postUrl}" target="_blank">포스팅 →</a></div>`:''}
+      </div>`).join('') : '<div style="color:var(--ink4);font-size:12px;padding:16px 0">협업 이력이 없습니다.</div>'}
+    <div class="btn-row">
+      ${inf.black==='Y'
+        ?`<button class="btn-s" onclick="doRemoveBL('${email}')">블랙 해제</button>`
+        :`<button class="btn-red" onclick="openBLForm('${email}')">블랙 지정</button>`}
+      <button class="btn-s" onclick="openEditInf('${email}')">정보 수정</button>
+      <button class="btn-p" onclick="openAddFromInf('${email}')">협업 추가</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+// ── 협업 행 상세 패널 ──────────────────────────────
+function openRowDetail(rowIndex) {
+  const r = _rows.find(x=>x.rowIndex===rowIndex);
+  if (!r) return;
+  const stepIdx = STATUS_STEPS.indexOf(r.status);
+  document.getElementById('sp-title').textContent = r.nick + ' 협업 상세';
+  document.getElementById('sp-body').innerHTML = `
+    <div class="status-steps">
+      ${STATUS_STEPS.map((s,i)=>`<div class="step ${i<stepIdx?'done':i===stepIdx?'current':''}">
+        <div class="step-dot">${i<stepIdx?'✓':i+1}</div>
+        <div class="step-label">${s}</div>
+      </div>`).join('')}
+    </div>
+    <div class="detail-grid">
+      <div><span>이메일</span>${r.email}</div>
+      <div><span>차수</span>${r.cycle||'—'}</div>
+      <div><span>플랫폼</span>${pbadge(r.platform||'네이버 블로그')}</div>
+      <div><span>진행상태</span>${sbadge(r.status)}</div>
+      <div><span>제안금액</span>${feeStr(r.proposeFee)}</div>
+      <div><span>확정금액</span>${r.confirmFee?feeStr(r.confirmFee):'—'}</div>
+      <div><span>가이드ID</span>${r.guideId||'—'}</div>
+      <div><span>포스팅마감</span>${r.deadline||'—'}</div>
+    </div>
+    ${(r.postUrl||r.realName)?`
+      <hr class="divider">
+      <div class="sec-title">포스팅 / 발송 정보</div>
+      <div class="detail-grid">
+        <div><span>실명</span>${r.realName||'미수집'}</div>
+        <div><span>연락처</span>${r.phone||'미수집'}</div>
+        ${r.postUrl?`<div style="grid-column:1/-1"><span>포스팅 URL</span><a href="${r.postUrl}" target="_blank">${r.postUrl}</a></div>`:''}
+        ${r.postTitle?`<div style="grid-column:1/-1"><span>포스팅 제목</span>${r.postTitle}</div>`:''}
+      </div>`:''}
+    ${r.memo?`<hr class="divider"><div class="sec-title">메모</div><div class="memo-box">${r.memo}</div>`:''}
+    <div class="btn-row">
+      <button class="btn-s" onclick="openEditRow(${r.rowIndex})">수정</button>
+      ${r.status==='진행확정'?`<button class="btn-p" onclick="openGuideForm(${r.rowIndex},'가이드발송')">가이드 발송 입력</button>`:''}
+      ${r.status==='가이드발송'?`<button class="btn-p" onclick="openPostForm(${r.rowIndex},'포스팅완료')">포스팅 완료 입력</button>`:''}
+      ${['포스팅완료','발송대기'].includes(r.status)&&r.sent==='N'?`<button class="btn-green" onclick="doMarkSent(${r.rowIndex})">발송처리</button>`:''}
+      <button class="btn-s" onclick="openInfDetail('${r.email}')">전체 이력</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+// ── 가이드 발송 입력 폼 ────────────────────────────
+function openGuideForm(rowIndex, newStatus) {
+  const r = _rows.find(x=>x.rowIndex===rowIndex);
+  document.getElementById('sp-title').textContent = '가이드 발송 정보 입력';
+  document.getElementById('sp-body').innerHTML = `
+    <div class="info-box" style="margin-bottom:16px">
+      <strong>${r.nick}</strong> — ${r.cycle} 가이드 발송 정보를 입력하세요.
+    </div>
+    <div class="fg"><label class="fl">가이드 ID <span class="req">*</span></label>
+      <select class="fc" id="g-id">
+        <option value="">선택...</option>
+        ${_guides.map(g=>`<option value="${g.id}">${g.id} (${g.cycle}) ${g.link?'— 링크있음':''}</option>`).join('')}
+      </select>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">가이드 발송일 <span class="req">*</span></label>
+        <input class="fc" type="date" id="g-sent" value="${_today()}">
+      </div>
+      <div class="fg"><label class="fl">포스팅 마감일</label>
+        <input class="fc" type="date" id="g-deadline">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closePanel()">취소</button>
+      <button class="btn-p" onclick="saveGuideForm(${rowIndex},'${newStatus}')">저장</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+function saveGuideForm(rowIndex, newStatus) {
+  const guideId  = document.getElementById('g-id').value;
+  const guideSent= document.getElementById('g-sent').value;
+  const deadline = document.getElementById('g-deadline').value;
+  if (!guideId||!guideSent) { toast('가이드ID와 발송일은 필수입니다.','err'); return; }
+  apiPost({ action: 'updateStatus', rowIndex, status: newStatus, extra: {guideId, guideSent, deadline} })
+    .then(() => { closePanel(); toast('가이드 발송 저장', 'ok'); loadAll(); })
+    .catch(e => toast('오류: ' + e, 'err'));
+}
+
+// ── 포스팅 완료 입력 폼 ────────────────────────────
+function openPostForm(rowIndex, newStatus) {
+  const r = _rows.find(x=>x.rowIndex===rowIndex);
+  document.getElementById('sp-title').textContent = '포스팅 완료 정보 입력';
+  document.getElementById('sp-body').innerHTML = `
+    <div class="info-box" style="margin-bottom:16px">
+      <strong>${r.nick}</strong> — 포스팅 완료 정보와 상품권 발송 정보를 입력하세요.
+    </div>
+    <div class="fg"><label class="fl">포스팅 URL <span class="req">*</span></label>
+      <input class="fc" id="p-url" value="${r.postUrl||''}" placeholder="https://blog.naver.com/...">
+    </div>
+    <div class="fg"><label class="fl">포스팅 제목</label>
+      <input class="fc" id="p-title" value="${r.postTitle||''}" placeholder="포스팅 제목 입력">
+    </div>
+    <hr class="divider">
+    <div class="sec-title">상품권 발송 정보 (포스팅 확인 후 수집)</div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">실명 (입금자명)</label>
+        <input class="fc" id="p-name" value="${r.realName||''}" placeholder="홍길동">
+      </div>
+      <div class="fg"><label class="fl">연락처</label>
+        <input class="fc" id="p-phone" value="${r.phone||''}" placeholder="010-0000-0000">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">확정금액 (원)</label>
+      <select class="fc" id="p-fee">
+        <option value="">제안금액과 동일 (${feeStr(r.proposeFee)})</option>
+        ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}">${f}원</option>`).join('')}
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closePanel()">취소</button>
+      <button class="btn-p" onclick="savePostForm(${rowIndex},'${newStatus}')">저장</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+function savePostForm(rowIndex, newStatus) {
+  const postUrl   = document.getElementById('p-url').value.trim();
+  const postTitle = document.getElementById('p-title').value.trim();
+  const realName  = document.getElementById('p-name').value.trim();
+  const phone     = document.getElementById('p-phone').value.trim();
+  const confirmFee= document.getElementById('p-fee').value;
+  if (!postUrl) { toast('포스팅 URL은 필수입니다.','err'); return; }
+  apiPost({ action: 'updateStatus', rowIndex, status: newStatus, extra: {postUrl, postTitle, realName, phone, confirmFee} })
+    .then(() => { closePanel(); toast('포스팅 완료 저장', 'ok'); loadAll(); })
+    .catch(e => toast('오류: ' + e, 'err'));
+}
+
+// ── 신규 등록 폼 ───────────────────────────────────
+function openAddPanel() {
+  _editRow = null;
+  document.getElementById('sp-title').textContent = '인플루언서 등록';
+  document.getElementById('sp-body').innerHTML = buildAddForm(null, '');
+  document.getElementById('overlay').classList.add('open');
+  requestAnimationFrame(() => selectPlat('네이버 블로그'));
+}
+function openAddFromInf(email) {
+  _editRow = null;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-cyc').classList.add('on');
+  document.querySelectorAll('.nav-btn')[1].classList.add('on');
+  const inf = _summary.find(i=>i.email===email)||{};
+  document.getElementById('sp-title').textContent = '협업 추가 — ' + (inf.nick||email);
+  document.getElementById('sp-body').innerHTML = buildAddForm(inf, email);
+  document.getElementById('overlay').classList.add('open');
+  requestAnimationFrame(() => {
+    selectPlat(inf.platform||'네이버 블로그');
+    const emailEl = document.getElementById('f-email');
+    if (emailEl) emailEl.readOnly = true;
+    loadInfPreview(email);
+  });
+}
+
+function buildAddForm(d, prefillEmail) {
+  const em = d ? d.email : (prefillEmail||'');
+  return `
+    <div class="fg">
+      <label class="fl">이메일 <span class="req">*</span></label>
+      <input class="fc" id="f-email" value="${em}" placeholder="example@naver.com"
+             oninput="loadInfPreview(this.value)" ${d&&em?'readonly':''}>
+      <div id="dup-area"></div>
+    </div>
+    <div id="inf-prev-box"></div>
+    <div class="fg">
+      <label class="fl">플랫폼 <span class="req">*</span></label>
+      <div class="plat-group">
+        <button type="button" class="plat-btn" id="pb-nv" onclick="selectPlat('네이버 블로그')">네이버 블로그</button>
+        <button type="button" class="plat-btn" id="pb-ts" onclick="selectPlat('티스토리')">티스토리</button>
+      </div>
+      <input type="hidden" id="f-plat" value="${d?d.platform:'네이버 블로그'}">
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">닉네임 <span class="req">*</span></label>
+        <input class="fc" id="f-nick" value="${d?d.nick:''}" placeholder="블로그 닉네임">
+      </div>
+      <div class="fg"><label class="fl">카테고리</label>
+        <select class="fc" id="f-cat">
+          ${CATEGORIES.map(c=>`<option${d&&d.category===c?' selected':''}>${c}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">방문자수</label>
+        <input class="fc" id="f-vis" value="${d?d.visitors:''}" placeholder="5,000">
+      </div>
+      <div class="fg"><label class="fl">블로그 URL</label>
+        <input class="fc" id="f-url" value="${d?d.blogUrl:''}" placeholder="https://blog.naver.com/...">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">메모 (특이사항, 단가 이력 등)</label>
+      <textarea class="fc" id="f-memo" style="min-height:70px">${d?d.memo:''}</textarea>
+    </div>
+    <hr class="divider">
+    <div class="sec-title">협업 정보 (없으면 공란)</div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">차수</label>
+        <input class="fc" id="f-cycle" value="${_curCycle||''}" placeholder="예: 2025년 7차">
+      </div>
+      <div class="fg"><label class="fl">제안금액 (원)</label>
+        <select class="fc" id="f-fee">
+          <option value="">선택...</option>
+          ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}">${f}원</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">진행상태</label>
+      <select class="fc" id="f-status">
+        ${STATUSES.map(s=>`<option${s==='컨택완료'?' selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closePanel()">취소</button>
+      <button class="btn-p" id="save-btn" onclick="saveNewRow()">저장</button>
+    </div>`;
+}
+
+function loadInfPreview(val) {
+  const area = document.getElementById('dup-area');
+  const box  = document.getElementById('inf-prev-box');
+  if (!area||!box) return;
+  if (!val||!val.includes('@')&&val.length<4) { area.innerHTML=''; box.innerHTML=''; return; }
+  const inf = _summary.find(i=>i.email.toLowerCase()===val.toLowerCase());
+  if (!inf) { area.innerHTML=''; box.innerHTML=''; return; }
+  area.innerHTML = inf.black==='Y'
+    ? `<div class="info-box danger" style="margin-top:6px;font-size:12px">⚠ <strong>${inf.nick}</strong>은 블랙리스트입니다 — ${inf.blackReason||'사유 없음'}</div>`
+    : '';
+  const hist = rowsOf(inf.email);
+  box.innerHTML = `<div class="info-box" style="margin-bottom:14px">
+    <div class="inf-name">${pbadge(inf.platform)}<span>${inf.nick}</span>${inf.black==='Y'?'<span class="badge b-bl">블랙</span>':''}</div>
+    <div class="info-grid">
+      <div><span>카테고리</span>${inf.category||'—'}</div>
+      <div><span>방문자수</span>${inf.visitors||'—'}</div>
+      <div><span>총 협업</span><strong>${inf.collabCount}회</strong></div>
+      <div><span>평균단가</span><strong>${inf.avgFee?inf.avgFee.toLocaleString()+'원':'—'}</strong></div>
+    </div>
+    ${hist.length?`<div style="margin-top:10px;font-size:11px;font-weight:600;color:var(--ink3)">최근 협업</div>
+    ${hist.slice(-3).reverse().map(r=>`<div style="display:flex;gap:8px;align-items:center;margin-top:5px;font-size:11px">
+      ${sbadge(r.status)}<span>${r.cycle}</span><span class="mono">${feeStr(r.proposeFee)}</span>
+    </div>`).join('')}`:''}
+    ${inf.memo?`<div class="memo-box" style="margin-top:8px;font-size:11px">${inf.memo}</div>`:''}
+  </div>`;
+  const nickEl=(document.getElementById('f-nick'));  if(nickEl&&!nickEl.value) nickEl.value=inf.nick;
+  const visEl =(document.getElementById('f-vis'));   if(visEl&&!visEl.value)  visEl.value=inf.visitors||'';
+  const urlEl =(document.getElementById('f-url'));   if(urlEl&&!urlEl.value)  urlEl.value=inf.blogUrl||'';
+  const catEl =(document.getElementById('f-cat'));   if(catEl&&inf.category)  catEl.value=inf.category;
+  const memoEl=(document.getElementById('f-memo')); if(memoEl&&!memoEl.value) memoEl.value=inf.memo||'';
+  selectPlat(inf.platform||'네이버 블로그');
+}
+
+function selectPlat(val) {
+  const platEl = document.getElementById('f-plat');
+  const nvEl   = document.getElementById('pb-nv');
+  const tsEl   = document.getElementById('pb-ts');
+  if (platEl) platEl.value = val;
+  if (nvEl)   nvEl.className = 'plat-btn' + (val === '네이버 블로그' ? ' nv' : '');
+  if (tsEl)   tsEl.className = 'plat-btn' + (val === '티스토리' ? ' ts' : '');
+}
+
+function saveNewRow() {
+  const email = (document.getElementById('f-email')||{}).value?.trim();
+  const nick  = (document.getElementById('f-nick')||{}).value?.trim();
+  if (!email||!nick) { toast('이메일과 닉네임은 필수입니다.','err'); return; }
+  const btn = document.getElementById('save-btn');
+  btn.disabled=true; btn.textContent='저장 중...';
+  const data = {
+    email, nick,
+    platform: document.getElementById('f-plat').value,
+    category: document.getElementById('f-cat').value,
+    visitors: document.getElementById('f-vis').value,
+    blogUrl:  document.getElementById('f-url').value,
+    memo:     document.getElementById('f-memo').value,
+    cycle:    document.getElementById('f-cycle').value,
+    proposeFee: document.getElementById('f-fee').value,
+    status:   document.getElementById('f-status').value,
+    black: 'N', sent: 'N',
+  };
+  const tempRow = {
+    rowIndex: -1, email: data.email, nick: data.nick,
+    platform: data.platform||'네이버 블로그', category: data.category||'',
+    visitors: data.visitors||'', blogUrl: data.blogUrl||'',
+    black: 'N', blackReason: '', memo: data.memo||'',
+    cycle: data.cycle||'', proposeFee: data.proposeFee||'',
+    status: data.status||'컨택완료', guideId:'', guideSent:'', deadline:'',
+    postUrl:'', postTitle:'', realName:'', phone:'',
+    confirmFee:'', sent:'N', sentDate:'', regDate: _today()
+  };
+  _rows.push(tempRow);
+  _summary = _buildSummary(_rows);
+  renderAll(); renderCyc();
+  closePanel();
+  toast('저장 중...', '');
+
+  apiPost({ action: 'addRow', data })
+    .then(res => {
+      btn.disabled=false; btn.textContent='저장';
+      toast((res && res.message) ? res.message : '등록 완료', 'ok');
+      loadAll();
+    })
+    .catch(e => {
+      btn.disabled=false; btn.textContent='저장';
+      _rows = _rows.filter(r => r.rowIndex !== -1);
+      _summary = _buildSummary(_rows);
+      renderAll(); renderCyc();
+      toast('저장 오류: ' + e, 'err');
+    });
+}
+
+// ── 정보 수정 ──────────────────────────────────────
+function openEditInf(email) {
+  const inf = _summary.find(i => i.email === email);
+  if (!inf) { toast('인플루언서 정보를 찾을 수 없습니다.', 'err'); return; }
+  _panelTransitioning = true;
+  setTimeout(() => _panelTransitioning = false, 100);
+  _editRow = null;
+  _currentEditEmail = email;
+  document.getElementById('sp-title').textContent = inf.nick + ' 정보 수정';
+  document.getElementById('sp-body').innerHTML = buildEditInfForm(inf);
+  document.getElementById('overlay').classList.add('open');
+  requestAnimationFrame(() => selectPlat(inf.platform || '네이버 블로그'));
+}
+
+function buildEditInfForm(inf) {
+  return `
+    <div class="info-box" style="margin-bottom:14px">
+      <div style="font-size:11px;color:var(--ink3)">이메일(식별자)은 변경할 수 없습니다.</div>
+      <div style="font-size:13px;font-weight:700;margin-top:3px">${inf.email}</div>
+    </div>
+    <div class="fg">
+      <label class="fl">플랫폼</label>
+      <div class="plat-group">
+        <button type="button" class="plat-btn" id="pb-nv" onclick="selectPlat('네이버 블로그')">네이버 블로그</button>
+        <button type="button" class="plat-btn" id="pb-ts" onclick="selectPlat('티스토리')">티스토리</button>
+      </div>
+      <input type="hidden" id="f-plat" value="${inf.platform||'네이버 블로그'}">
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">닉네임</label>
+        <input class="fc" id="f-nick" value="${inf.nick||''}">
+      </div>
+      <div class="fg"><label class="fl">카테고리</label>
+        <select class="fc" id="f-cat">
+          ${CATEGORIES.map(c=>`<option${inf.category===c?' selected':''}>${c}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">방문자수</label>
+        <input class="fc" id="f-vis" value="${inf.visitors||''}">
+      </div>
+      <div class="fg"><label class="fl">블로그 URL</label>
+        <input class="fc" id="f-url" value="${inf.blogUrl||''}">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">메모</label>
+      <textarea class="fc" id="f-memo" style="min-height:80px">${inf.memo||''}</textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closePanel()">취소</button>
+      <button class="btn-p" onclick="saveEditInf(_currentEditEmail)">저장</button>
+    </div>`;
+}
+
+function saveEditInf(email) {
+  const data = {
+    nick:     (document.getElementById('f-nick')||{}).value?.trim()||'',
+    platform: (document.getElementById('f-plat')||{}).value||'네이버 블로그',
+    category: (document.getElementById('f-cat')||{}).value||'',
+    visitors: (document.getElementById('f-vis')||{}).value||'',
+    blogUrl:  (document.getElementById('f-url')||{}).value||'',
+    memo:     (document.getElementById('f-memo')||{}).value||'',
+  };
+  const inf = _summary.find(i => i.email === email);
+  if (inf) Object.assign(inf, data);
+  _rows.filter(r => r.email === email).forEach(r => Object.assign(r, data));
+  renderAll(); renderCyc();
+  closePanel();
+  toast('수정 중...', '');
+
+  apiPost({ action: 'updateRow', rowIndex: -1, data: {...data, email} })
+    .then(() => { toast('수정 완료', 'ok'); loadAll(); })
+    .catch(e => { toast('오류: ' + e, 'err'); loadAll(); });
+}
+
+function openEditRow(rowIndex) {
+  _panelTransitioning = true;
+  setTimeout(() => _panelTransitioning = false, 100);
+  const r = _rows.find(x => x.rowIndex === rowIndex);
+  if (!r) { toast('협업 데이터를 찾을 수 없습니다.', 'err'); return; }
+  _editRow = rowIndex;
+  document.getElementById('sp-title').textContent = r.nick + ' 협업 수정';
+  document.getElementById('sp-body').innerHTML = buildEditRowForm(r);
+  document.getElementById('overlay').classList.add('open');
+}
+
+function buildEditRowForm(r) {
+  return `
+    <div class="info-box" style="margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700">${r.nick}</div>
+      <div style="font-size:11px;color:var(--ink3);margin-top:2px">${r.email} · ${r.cycle||'차수 없음'}</div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">차수</label>
+        <input class="fc" id="er-cycle" value="${r.cycle||''}">
+      </div>
+      <div class="fg"><label class="fl">제안금액 (원)</label>
+        <select class="fc" id="er-fee">
+          <option value="">—</option>
+          ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.proposeFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">진행상태</label>
+      <select class="fc" id="er-status">
+        ${STATUSES.map(s=>`<option${r.status===s?' selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>
+    <div class="fg"><label class="fl">가이드 ID</label>
+      <input class="fc" id="er-guide" value="${r.guideId||''}">
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">가이드 발송일</label>
+        <input class="fc" type="date" id="er-gsent" value="${r.guideSent||''}">
+      </div>
+      <div class="fg"><label class="fl">포스팅 마감일</label>
+        <input class="fc" type="date" id="er-deadline" value="${r.deadline||''}">
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="sec-title">포스팅 / 발송 정보</div>
+    <div class="fg"><label class="fl">포스팅 URL</label>
+      <input class="fc" id="er-purl" value="${r.postUrl||''}" placeholder="https://...">
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">실명 (입금자명)</label>
+        <input class="fc" id="er-name" value="${r.realName||''}" placeholder="홍길동">
+      </div>
+      <div class="fg"><label class="fl">연락처</label>
+        <input class="fc" id="er-phone" value="${r.phone||''}" placeholder="010-0000-0000">
+      </div>
+    </div>
+    <div class="fg"><label class="fl">확정금액 (원)</label>
+      <select class="fc" id="er-cfee">
+        <option value="">—</option>
+        ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.confirmFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closePanel()">취소</button>
+      <button class="btn-p" onclick="saveEditRow(${r.rowIndex})">저장</button>
+    </div>`;
+}
+
+function saveEditRow(rowIndex) {
+  const data = {
+    cycle:      (document.getElementById('er-cycle')||{}).value||'',
+    proposeFee: (document.getElementById('er-fee')||{}).value||'',
+    status:     (document.getElementById('er-status')||{}).value||'',
+    guideId:    (document.getElementById('er-guide')||{}).value||'',
+    guideSent:  (document.getElementById('er-gsent')||{}).value||'',
+    deadline:   (document.getElementById('er-deadline')||{}).value||'',
+    postUrl:    (document.getElementById('er-purl')||{}).value||'',
+    realName:   (document.getElementById('er-name')||{}).value||'',
+    phone:      (document.getElementById('er-phone')||{}).value||'',
+    confirmFee: (document.getElementById('er-cfee')||{}).value||'',
+  };
+  const row = _rows.find(r => r.rowIndex === rowIndex);
+  if (row) Object.assign(row, data);
+  _summary = _buildSummary(_rows);
+  renderCyc(); renderShip(); renderDone(); renderAll();
+  closePanel();
+  toast('수정 중...', '');
+
+  apiPost({ action: 'updateRow', rowIndex, data })
+    .then(() => { toast('수정 완료', 'ok'); loadAll(); })
+    .catch(e => { toast('오류: ' + e, 'err'); loadAll(); });
+}
+
+// ── 렌더: 가이드 목록 ──────────────────────────────
+function renderGuide() {
+  const gb = document.getElementById('guide-cnt');
+  const tb = document.getElementById('guide-body');
+  if (!gb || !tb) return;
+  gb.textContent = `${_guides.length}개`;
+  if (!_guides.length) {
+    tb.innerHTML = '<tr class="empty-row"><td colspan="6">등록된 가이드가 없습니다.</td></tr>';
+    return;
+  }
+  tb.innerHTML = _guides.map(g => {
+    const users = _rows.filter(r => r.guideId === g.id);
+    const userBadges = users.length
+      ? users.map(r => `<span style="display:inline-block;background:var(--blue-l);color:var(--blue);border-radius:4px;padding:1px 7px;font-size:10px;font-weight:600;margin:1px">${r.nick||r.email}</span>`).join(' ')
+      : '<span style="color:var(--ink4);font-size:11px">없음</span>';
+    return `<tr onclick="openGuideDetail('${g.id}')">
+      <td style="font-weight:700;color:var(--purple)">${g.id}</td>
+      <td style="font-size:11px">${g.cycle||'—'}</td>
+      <td>${g.link?`<a href="${g.link}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue);font-size:11px;font-weight:600">노션 열기 →</a>`:'—'}</td>
+      <td style="font-size:12px">${g.m1||'—'}</td>
+      <td style="font-size:11px;color:var(--ink3)">${g.m2||'—'}</td>
+      <td>${userBadges}</td>
+    </tr>`;
+  }).join('');
+}
+
+function openGuideDetail(id) {
+  const g = _guides.find(x => x.id === id);
+  if (!g) return;
+  const users = _rows.filter(r => r.guideId === id);
+  document.getElementById('sp-title').textContent = `가이드 ${id}`;
+  document.getElementById('sp-body').innerHTML = `
+    <div class="info-box" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:16px;font-weight:700;color:var(--purple)">${g.id}</span>
+        <span style="font-size:12px;color:var(--ink3)">${g.cycle||''}</span>
+      </div>
+      ${g.link ? `<a href="${g.link}" target="_blank" class="btn-p" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:7px 14px;text-decoration:none">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M7 1h5v5M5 8L12 1M1 6v6h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        노션 가이드 열기
+      </a>` : '<span style="color:var(--ink4);font-size:12px">노션 링크 없음</span>'}
+    </div>
+    <div class="detail-grid" style="margin-bottom:14px">
+      <div><span>메인 키워드</span><strong>${g.m1||'—'}</strong></div>
+      <div><span>서브 키워드</span>${g.m2||'—'}</div>
+      ${g.m3 ? `<div style="grid-column:1/-1"><span>기타 메모</span>${g.m3}</div>` : ''}
+    </div>
+    <hr class="divider">
+    <div class="sec-title">이 가이드를 사용 중인 블로거 (${users.length}명)</div>
+    ${users.length ? users.map(r => `
+      <div class="hist-item" onclick="openRowDetail(${r.rowIndex})" style="cursor:pointer">
+        <div style="display:flex;align-items:center;gap:8px">
+          ${pbadge(r.platform||'네이버 블로그')}
+          <strong>${r.nick}</strong>
+          ${sbadge(r.status)}
+          <span style="font-size:11px;color:var(--ink3)">${r.cycle}</span>
+        </div>
+        ${r.deadline ? `<div style="font-size:11px;color:var(--amber);margin-top:3px">마감: ${r.deadline}</div>` : ''}
+      </div>`).join('') : '<div style="color:var(--ink4);font-size:12px;padding:12px 0">사용 중인 블로거가 없습니다.</div>'}
+    <div class="btn-row">
+      <button class="btn-s" onclick="openGuideEditPanel('${id}')">수정</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function openGuideAddPanel() {
+  document.getElementById('sp-title').textContent = '가이드 등록';
+  document.getElementById('sp-body').innerHTML = buildGuideForm(null);
+  document.getElementById('overlay').classList.add('open');
+}
+
+function openGuideEditPanel(id) {
+  const g = _guides.find(x => x.id === id);
+  document.getElementById('sp-title').textContent = `가이드 ${id} 수정`;
+  document.getElementById('sp-body').innerHTML = buildGuideForm(g);
+  document.getElementById('overlay').classList.add('open');
+}
+
+function buildGuideForm(g) {
+  return `
+    <div class="fg"><label class="fl">차수</label>
+      <input class="fc" id="gf-cycle" value="${g?g.cycle:_curCycle||''}" placeholder="예: 2025년 7차">
+    </div>
+    <div class="fg"><label class="fl">노션 링크</label>
+      <input class="fc" id="gf-link" value="${g?g.link||'':''}" placeholder="https://notion.so/...">
+    </div>
+    <div class="fg"><label class="fl">메인 키워드 <span class="req">*</span></label>
+      <input class="fc" id="gf-m1" value="${g?g.m1||'':''}" placeholder="예: 경리나라 무료체험">
+    </div>
+    <div class="fg"><label class="fl">서브 키워드</label>
+      <input class="fc" id="gf-m2" value="${g?g.m2||'':''}" placeholder="예: 경리회계프로그램, 경리나라 가격">
+    </div>
+    <div class="fg"><label class="fl">기타 메모</label>
+      <textarea class="fc" id="gf-m3" style="min-height:60px">${g?g.m3||'':''}</textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="closePanel()">취소</button>
+      <button class="btn-p" id="gf-save" onclick="saveGuide('${g?g.id:''}')">저장</button>
+    </div>`;
+}
+
+function saveGuide(existingId) {
+  const m1 = (document.getElementById('gf-m1')||{}).value?.trim();
+  if (!m1) { toast('메인 키워드는 필수입니다.','err'); return; }
+  const btn = document.getElementById('gf-save');
+  btn.disabled=true; btn.textContent='저장 중...';
+  const data = {
+    cycle: document.getElementById('gf-cycle').value||'',
+    link:  document.getElementById('gf-link').value||'',
+    m1,
+    m2: document.getElementById('gf-m2').value||'',
+    m3: document.getElementById('gf-m3').value||'',
+    memo: ''
+  };
+  apiPost({ action: 'addGuide', data })
+    .then(res => {
+      btn.disabled=false; btn.textContent='저장';
+      closePanel();
+      toast((res&&res.message)||'가이드 저장 완료', 'ok');
+      loadAll();
+    })
+    .catch(e => {
+      btn.disabled=false; btn.textContent='저장';
+      toast('오류: ' + e, 'err');
+    });
+}
+
+// ── CSV 내보내기 ───────────────────────────────────
+function exportShipCSV() {
+  const sc  = document.getElementById('ship-sel')?.value||'all';
+  const rows = _rows.filter(r => {
+    if (r.sent!=='N') return false;
+    if (!['포스팅완료','발송대기'].includes(r.status)) return false;
+    if (sc!=='all' && r.cycle!==sc) return false;
+    return true;
+  });
+  if (!rows.length) { toast('내보낼 데이터가 없습니다.','err'); return; }
+  const header = ['차수','닉네임','실명','연락처','확정금액','포스팅URL'];
+  const lines  = [header.join(',')];
+  rows.forEach(r => {
+    lines.push([r.cycle,r.nick,r.realName||'',r.phone||'',r.confirmFee||r.proposeFee||'',r.postUrl||''].map(v=>`"${v}"`).join(','));
+  });
+  const blob = new Blob(['\uFEFF'+lines.join('\n')], {type:'text/csv;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href=url; a.download=`발송요청서_${sc==='all'?'전체':sc}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  toast('발송요청서 다운로드 완료','ok');
+}
+
+// ── 오버레이 ───────────────────────────────────────
+function closeIfOut(e) {
+  if (_panelTransitioning) return;
+  if (!document.getElementById('sp').contains(e.target)) closePanel();
+}
+function closePanel() { document.getElementById('overlay').classList.remove('open'); }
+
+// ── 토스트 ─────────────────────────────────────────
+function toast(msg, type='') {
+  const c = document.getElementById('tc');
+  const t = document.createElement('div');
+  t.className=`toast ${type}`; t.textContent=msg;
+  c.appendChild(t); setTimeout(()=>t.remove(),3000);
+}
+
+// ── 유틸 ───────────────────────────────────────────
+function _today() {
+  const d=new Date(); return d.toISOString().split('T')[0];
+}
+</script>
+</body>
+</html>
