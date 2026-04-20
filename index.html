@@ -777,7 +777,7 @@ function renderDash() {
 
   // 오늘 날짜 기준 차수 감지
   const dashCycle = _autoDetectCycle() || _curCycle;
-  const cycleRows = _rows.filter(r => r.cycle === dashCycle);
+  const cycleRows = _rows.filter(r => r.cycle === dashCycle && r.black !== 'Y' && r.status !== '블랙리스트');
 
   // 배너
   const tag = document.getElementById('dash-cycle-tag');
