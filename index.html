@@ -20,7 +20,7 @@
   --blue:   #2563EB;  --blue-l: #EFF6FF;  --blue-d: #1D4ED8;
   --green:  #059669;  --green-l:#ECFDF5;
   --amber:  #D97706;  --amber-l:#FFFBEB;
-  --red:    #DC2626;  --red-l:  #FEF2F2;
+  --red:    #E05252;  --red-l:  #FFF5F5;
   --purple: #7C3AED;  --purple-l:#F5F3FF;
   --teal:   #0D9488;  --teal-l: #F0FDFA;
 
@@ -177,8 +177,8 @@ thead th { background:var(--ink); color:#94A3B8; font-weight:500; font-size:10px
 tbody tr { border-bottom:1px solid var(--line); cursor:pointer; transition:background var(--tr); }
 tbody tr:hover { background:var(--blue-l); }
 tbody tr:last-child { border-bottom:none; }
-tbody tr.bl-row { background:var(--red-l); }
-tbody tr.bl-row:hover { background:#FEE2E2; }
+tbody tr.bl-row { background:#FFF8F8; }
+tbody tr.bl-row:hover { background:#FFF0F0; }
 td { padding:9px 12px; vertical-align:middle; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink2); }
 td.mono { font-family:'JetBrains Mono',monospace; font-size:11px; }
 td strong { color:var(--ink); font-weight:600; }
@@ -215,12 +215,12 @@ td strong { color:var(--ink); font-weight:600; }
 
 .overlay { position:fixed; inset:0; background:rgba(15,23,42,.4); z-index:200; display:none; justify-content:flex-end; backdrop-filter:blur(2px); }
 .overlay.open { display:flex; }
-.side-panel { width:500px; max-width:100vw; height:100vh; background:var(--paper); overflow-y:auto; box-shadow:var(--sh-lg); display:flex; flex-direction:column; }
-.sp-head { padding:16px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--paper); z-index:10; }
+.side-panel { width:500px; max-width:100vw; height:100vh; background:var(--paper); overflow:hidden; box-shadow:var(--sh-lg); display:flex; flex-direction:column; }
+.sp-head { padding:14px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; background:var(--paper); z-index:10; }
 .sp-title { font-size:15px; font-weight:700; }
 .sp-close { width:30px; height:30px; border:1px solid var(--line); border-radius:var(--r); background:var(--paper2); color:var(--ink3); cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:var(--tr); }
 .sp-close:hover { background:var(--paper3); }
-.sp-body { padding:20px; flex:1; }
+.sp-body { flex:1; overflow-y:auto; display:flex; flex-direction:column; }
 
 .fg { margin-bottom:14px; }
 .fl { display:block; font-size:11px; font-weight:600; color:var(--ink3); margin-bottom:5px; }
@@ -494,6 +494,9 @@ select.fc { cursor:pointer; }
 </div>
 
 <div id="tab-black" class="panel">
+  <div class="toolbar" style="margin-bottom:12px;">
+    <input class="search-input" id="black-q" placeholder="닉네임 / 이메일 / 블랙 사유 검색..." oninput="renderBlack()" style="min-width:280px;">
+  </div>
   <div class="card">
     <div class="card-header">
       <span class="card-title" style="color:var(--red)">블랙리스트</span>
@@ -516,27 +519,16 @@ select.fc { cursor:pointer; }
 </div>
 
 <div id="tab-guide" class="panel">
-  <div class="toolbar">
-    <button class="btn-add" style="font-size:12px;padding:5px 14px;" onclick="openGuideAddPanel()">+ 가이드 등록</button>
+  <div class="toolbar" style="margin-bottom:14px;">
+    <span style="font-size:13px;font-weight:600;">가이드 목록</span>
+    <span id="guide-cnt" style="margin-left:8px;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--purple-l);color:var(--purple);"></span>
+    <button class="btn-add ml" style="font-size:12px;padding:5px 14px;" onclick="openGuideAddPanel()">+ 가이드 등록</button>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <span class="card-title">가이드 목록</span>
-      <span class="card-count" id="guide-cnt"></span>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <colgroup>
-          <col style="width:75px"><col style="width:120px"><col style="width:120px">
-          <col style="width:160px"><col style="width:220px"><col style="width:auto">
-        </colgroup>
-        <thead><tr>
-          <th>가이드ID</th><th>차수</th><th>노션 링크</th>
-          <th>메인 키워드</th><th>서브 키워드</th><th>사용 블로거</th>
-        </tr></thead>
-        <tbody id="guide-body"></tbody>
-      </table>
-    </div>
+  <div id="guide-cards" style="display:flex;flex-direction:column;gap:10px;"></div>
+  <div id="guide-empty" style="display:none;background:var(--paper);border:2px dashed var(--line2);border-radius:12px;padding:48px;text-align:center;">
+    <div style="font-size:28px;margin-bottom:10px;">📋</div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:6px;color:var(--ink2);">등록된 가이드가 없습니다</div>
+    <button class="btn-p" style="margin-top:8px;" onclick="openGuideAddPanel()">+ 첫 가이드 등록</button>
   </div>
 </div>
 
@@ -558,7 +550,7 @@ select.fc { cursor:pointer; }
 // ════════════════════════════════════════════════════
 // ★ 여기에 Apps Script 배포 URL을 붙여넣으세요 ★
 // ════════════════════════════════════════════════════
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUJeJ1xjSSsyWiws0xS_7yIvfA9XDuFegDuZ8RdTULc5OKxewTKpXpumItOh7ifMboaA/exec';
+const SCRIPT_URL = '여기에_Apps_Script_배포_URL_붙여넣기';
 
 // GET 래퍼
 async function apiGet(action) {
@@ -1115,10 +1107,20 @@ function renderDone() {
 
 // ── 렌더: 블랙리스트 ──────────────────────────────
 function renderBlack() {
-  const bls = _summary.filter(i=>i.black==='Y');
-  document.getElementById('black-cnt').textContent = `${bls.length}명`;
+  const q = (document.getElementById('black-q')?.value || '').toLowerCase().trim();
+  let bls = _summary.filter(i=>i.black==='Y');
+  if (q) {
+    bls = bls.filter(i =>
+      (i.nick||'').toLowerCase().includes(q) ||
+      (i.email||'').toLowerCase().includes(q) ||
+      (i.blackReason||'').toLowerCase().includes(q) ||
+      (i.memo||'').toLowerCase().includes(q)
+    );
+  }
+  const total = _summary.filter(i=>i.black==='Y').length;
+  document.getElementById('black-cnt').textContent = q ? `${bls.length}명 / 총 ${total}명` : `${total}명`;
   const b = document.getElementById('black-body');
-  if (!bls.length) { b.innerHTML=`<tr class="empty-row"><td colspan="7">블랙리스트가 비어 있습니다.</td></tr>`; return; }
+  if (!bls.length) { b.innerHTML=`<tr class="empty-row"><td colspan="7">${q ? '검색 결과가 없습니다.' : '블랙리스트가 비어 있습니다.'}</td></tr>`; return; }
   b.innerHTML = bls.map(i => `<tr class="bl-row" onclick="openInfDetail('${i.email}')">
     <td>${pbadge(i.platform)}</td>
     <td><strong>${i.nick}</strong></td>
@@ -1137,6 +1139,7 @@ function quickStatus(rowIndex, val) {
   if (val === '가이드발송') { openGuideForm(rowIndex, val); return; }
   if (val === '포스팅완료') { openPostForm(rowIndex, val); return; }
   if (val === '발송대기')   { openShipReadyForm(rowIndex, val); return; }
+  if (val === '블랙리스트') { openBLFromRow(rowIndex); return; }  // BL 사유 입력 필요
 
   const row = _rows.find(r => r.rowIndex === rowIndex);
   const prevStatus = row ? row.status : '';
@@ -1162,7 +1165,7 @@ function openShipReadyForm(rowIndex, newStatus) {
   const r = _rows.find(x => x.rowIndex === rowIndex);
   if (!r) return;
   document.getElementById('sp-title').textContent = '발송 정보 입력';
-  document.getElementById('sp-body').innerHTML = `
+  document.getElementById('sp-body').innerHTML = `<div style="padding:20px;">
     <div class="info-box" style="margin-bottom:16px">
       <div style="font-size:13px;font-weight:700;margin-bottom:4px">${r.nick}</div>
       <div style="font-size:11px;color:var(--ink3)">${r.cycle} — 상품권 발송에 필요한 정보를 입력하세요.</div>
@@ -1222,11 +1225,80 @@ function doMarkSent(rowIndex) {
     .catch(e => toast('오류: ' + e, 'err'));
 }
 
-// ── 블랙리스트 ─────────────────────────────────────
+// ── 진행 단계에서 블랙 지정: 가이드 삭제 후 BL 폼 ───
+function openBLFromRow(rowIndex) {
+  const r = _rows.find(x => x.rowIndex === rowIndex);
+  if (!r) return;
+
+  // 가이드가 발송된 상태이면 삭제 확인
+  const hasGuide = !!r.guideId;
+  const guideLabel = hasGuide ? `가이드 <strong>${r.guideId}</strong>` : '';
+
+  document.getElementById('sp-title').textContent = r.nick + ' 블랙리스트 지정';
+  document.getElementById('sp-body').innerHTML = `<div style="padding:20px;">
+    <div class="info-box danger" style="margin-bottom:16px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:6px;">⚠ 블랙리스트 지정 절차</div>
+      ${hasGuide ? `<div style="font-size:12px;color:var(--ink2);margin-bottom:8px;line-height:1.6;">
+        현재 ${guideLabel}가 배정되어 있습니다.<br>
+        블랙 지정 시 <strong>가이드 배정이 초기화</strong>되고 진행상태가 <strong>블랙리스트</strong>로 변경됩니다.
+      </div>` : `<div style="font-size:12px;color:var(--ink2);margin-bottom:8px;">지정 후 진행상태가 블랙리스트로 변경됩니다.</div>`}
+    </div>
+    <div class="fg"><label class="fl">블랙리스트 사유 <span class="req">*</span></label>
+      <select class="fc" id="bl-sel" onchange="toggleBLCustom(this.value)">
+        <option value="">선택...</option>
+        ${BL_REASONS.map(r2=>`<option>${r2}</option>`).join('')}
+      </select>
+    </div>
+    <div class="fg" id="bl-custom-wrap" style="display:none">
+      <label class="fl">직접 입력</label>
+      <input class="fc" id="bl-custom" placeholder="사유 직접 입력">
+    </div>
+    <div class="fg"><label class="fl">상세 메모 (선택)</label>
+      <textarea class="fc" id="bl-memo" placeholder="단가 금액, 구체적 경위 등...">${r.memo||''}</textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-s" onclick="_panelTransitioning=true;setTimeout(()=>{openRowDetail(${rowIndex});_panelTransitioning=false;},50)">취소</button>
+      <button style="padding:7px 14px;border-radius:var(--r);background:var(--red);color:#fff;border:none;font-size:12px;font-weight:600;cursor:pointer;flex:1" onclick="doBLFromRow(${rowIndex})">블랙리스트 지정 확정</button>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function doBLFromRow(rowIndex) {
+  const r = _rows.find(x => x.rowIndex === rowIndex);
+  if (!r) return;
+  const sel    = document.getElementById('bl-sel')?.value || '';
+  const custom = document.getElementById('bl-custom')?.value || '';
+  const memo   = document.getElementById('bl-memo')?.value || '';
+  const reason = sel === '기타' ? custom : sel;
+  if (!reason) { toast('사유를 선택하거나 입력해주세요.', 'err'); return; }
+
+  // 로컬 상태 업데이트: 가이드 초기화 + 상태 변경 + 블랙 지정
+  const prevGuideId = r.guideId;
+  r.status      = '블랙리스트';
+  r.black       = 'Y';
+  r.blackReason = reason;
+  r.guideId     = '';
+  r.guideSent   = '';
+  r.deadline    = '';
+  if (memo) r.memo = memo;
+  const inf = _summary.find(i => i.email === r.email);
+  if (inf) { inf.black = 'Y'; inf.blackReason = reason; if (memo) inf.memo = memo; }
+  _summary = _buildSummary(_rows);
+  renderDash(); renderCyc(); renderAll(); renderBlack();
+  closePanel();
+  toast('블랙리스트 지정 완료 · 가이드 초기화됨', 'ok');
+
+  // 서버에 순차 저장
+  const data = { status: '블랙리스트', guideId: '', guideSent: '', deadline: '' };
+  apiPost({ action: 'updateRow', rowIndex, data })
+    .then(() => apiPost({ action: 'setBlacklist', email: r.email, reason, memo }))
+    .then(() => { loadAll(); })
+    .catch(e => { toast('저장 오류: ' + e, 'err'); loadAll(); });
+}
 function openBLForm(email) {
   const inf = _summary.find(i=>i.email===email) || {};
   document.getElementById('sp-title').textContent = inf.nick + ' 블랙리스트 지정';
-  document.getElementById('sp-body').innerHTML = `
+  document.getElementById('sp-body').innerHTML = `<div style="padding:20px;">
     <div class="info-box danger" style="margin-bottom:16px">
       <div style="font-weight:600;margin-bottom:4px">⚠ 블랙리스트 지정</div>
       <div style="font-size:12px;color:var(--red)">지정 후 차수 등록 시 경고가 표시됩니다.</div>
@@ -1259,9 +1331,16 @@ function doSetBL(email) {
   const memo = document.getElementById('bl-memo')?.value||'';
   const reason = sel==='기타' ? custom : sel;
   if (!reason) { toast('사유를 선택하거나 입력해주세요.','err'); return; }
+  // 로컬 상태 즉시 반영
+  const inf = _summary.find(i=>i.email===email);
+  if (inf) { inf.black='Y'; inf.blackReason=reason; inf.memo=memo; }
+  _rows.filter(r=>r.email===email).forEach(r=>{ r.black='Y'; r.blackReason=reason; });
+  renderBlack(); renderAll(); renderCyc();
+  closePanel();
+  toast('블랙리스트 지정 완료', 'ok');
   apiPost({ action: 'setBlacklist', email, reason, memo })
-    .then(() => { closePanel(); toast('블랙리스트 지정 완료', 'ok'); loadAll(); })
-    .catch(e => toast('오류: ' + e, 'err'));
+    .then(() => { loadAll(); })
+    .catch(e => { toast('저장 오류: ' + e, 'err'); loadAll(); });
 }
 function doRemoveBL(email) {
   if (!confirm('블랙리스트에서 해제하시겠습니까?')) return;
@@ -1275,7 +1354,7 @@ function openInfDetail(email) {
   const inf = _summary.find(i=>i.email===email) || {};
   const hist = rowsOf(email);
   document.getElementById('sp-title').textContent = inf.nick + ' 상세';
-  document.getElementById('sp-body').innerHTML = `
+  document.getElementById('sp-body').innerHTML = `<div style="padding:20px;">
     <div class="info-box${inf.black==='Y'?' danger':''}">
       <div class="inf-name">
         ${pbadge(inf.platform)}
@@ -1316,15 +1395,12 @@ function openInfDetail(email) {
   document.getElementById('overlay').classList.add('open');
 }
 
-// ── 협업 행 상세 패널 (3탭 통합) ──────────────────
-let _spTab = 'collab'; // 현재 열린 탭
-
+// ── 협업 행 상세 패널 (탭 없이 전체 내용 한 번에) ──
 function openRowDetail(rowIndex) {
   _panelTransitioning = true;
   setTimeout(() => _panelTransitioning = false, 100);
   const r = _rows.find(x => x.rowIndex === rowIndex);
   if (!r) return;
-  _spTab = 'collab';
   _renderRowDetailPanel(r);
   document.getElementById('overlay').classList.add('open');
 }
@@ -1332,31 +1408,21 @@ function openRowDetail(rowIndex) {
 function _renderRowDetailPanel(r) {
   const stepIdx = STATUS_STEPS.indexOf(r.status);
   const guide   = _guides.find(g => g.id === r.guideId);
+  const allRows = rowsOf(r.email);
 
-  // 진행 단계 바
-  const stepsHtml = STATUS_STEPS.map((s,i) => {
-    const cls = i < stepIdx ? 'done' : i === stepIdx ? 'current' : '';
-    return `<div class="sp-rd-step ${cls}">
-      <div class="sp-rd-dot">${i < stepIdx ? '✓' : ''}</div>
-      <div class="sp-rd-lbl">${s}</div>
-    </div>`;
-  }).join('');
-
-  // 키워드 HTML
+  // 키워드 블록
   let kwHtml = '';
   if (guide) {
     const mains = guide.m1 ? guide.m1.split(',').map(k=>k.trim()).filter(Boolean) : [];
     const subs  = guide.m2 ? guide.m2.split(',').map(k=>k.trim()).filter(Boolean) : [];
-    kwHtml = `
-      <div style="background:var(--paper2);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:4px;">
-        <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:8px;">📋 ${guide.id} ${guide.cycle?'· '+guide.cycle:''}</div>
-        ${mains.length ? `<div style="margin-bottom:6px;"><div style="font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;">메인 키워드</div>
-          <div>${mains.map(k=>`<span style="display:inline-block;background:var(--purple-l);color:var(--purple);border-radius:4px;padding:3px 8px;font-size:11px;font-weight:600;margin:2px 3px 2px 0;">${k}</span>`).join('')}</div></div>` : ''}
-        ${subs.length ? `<div><div style="font-size:9px;font-weight:700;color:var(--ink4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;">서브 키워드</div>
-          <div>${subs.map(k=>`<span style="display:inline-block;background:var(--paper3);color:var(--ink2);border-radius:4px;padding:3px 8px;font-size:11px;border:1px solid var(--line2);margin:2px 3px 2px 0;">${k}</span>`).join('')}</div></div>` : ''}
-      </div>`;
+    kwHtml = `<div style="background:var(--paper2);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:8px;">
+      <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:6px;">📋 ${guide.id}${guide.cycle?' · '+guide.cycle:''}</div>
+      ${mains.length?`<div style="margin-bottom:5px;"><span style="font-size:9px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px;">메인</span>
+        <div style="margin-top:3px;">${mains.map(k=>`<span style="display:inline-block;background:var(--purple-l);color:var(--purple);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600;margin:2px 2px 2px 0;">${k}</span>`).join('')}</div></div>`:''}
+      ${subs.length?`<div><span style="font-size:9px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px;">서브</span>
+        <div style="margin-top:3px;">${subs.map(k=>`<span style="display:inline-block;background:var(--paper3);color:var(--ink2);border-radius:4px;padding:2px 8px;font-size:11px;border:1px solid var(--line2);margin:2px 2px 2px 0;">${k}</span>`).join('')}</div></div>`:''}</div>`;
   } else if (r.guideId) {
-    kwHtml = `<div style="padding:10px;background:var(--paper3);border-radius:8px;font-size:12px;color:var(--ink3);">${r.guideId} — 키워드 정보 없음</div>`;
+    kwHtml = `<div style="padding:8px 10px;background:var(--paper3);border-radius:8px;font-size:12px;color:var(--ink3);margin-top:8px;">${r.guideId} — 키워드 정보 없음</div>`;
   }
 
   // 다음 단계 버튼
@@ -1368,162 +1434,158 @@ function _renderRowDetailPanel(r) {
   else if (['포스팅완료','발송대기'].includes(r.status) && r.sent === 'N')
     nextBtn = `<button class="btn-p" style="background:var(--green);flex:1;" onclick="doMarkSent(${r.rowIndex})">→ 발송 처리</button>`;
 
-  // 탭 콘텐츠
-  const tabs = {
-    base: `
-      <div class="sp-rd-section">
-        <div class="sp-rd-sec-title">기본 정보</div>
-        <div class="sp-rd-2col">
-          <div class="sp-rd-field"><span class="sp-rd-label">플랫폼</span><div>${pbadge(r.platform||'네이버 블로그')}</div></div>
-          <div class="sp-rd-field"><span class="sp-rd-label">이메일</span><div style="font-size:11px;color:var(--ink2);word-break:break-all;">${r.email}</div></div>
-          <div class="sp-rd-field"><span class="sp-rd-label">카테고리</span><div>${r.category||'—'}</div></div>
-          <div class="sp-rd-field"><span class="sp-rd-label">방문자수</span><div>${r.visitors||'—'}</div></div>
-        </div>
-        <div class="sp-rd-field" style="margin-top:8px;">
-          <span class="sp-rd-label">블로그 URL</span>
-          ${r.blogUrl ? `<a href="${r.blogUrl}" target="_blank" style="font-size:12px;">${r.blogUrl}</a>` : '<div style="color:var(--ink4);">—</div>'}
-        </div>
-        ${r.memo ? `<div class="sp-rd-field" style="margin-top:8px;"><span class="sp-rd-label">메모</span>
-          <div style="background:#FAFAF7;border:1px solid #E8E4D4;border-radius:6px;padding:8px 10px;font-size:12px;white-space:pre-wrap;">${r.memo}</div></div>` : ''}
-      </div>
-      <div class="sp-rd-section">
-        <div class="sp-rd-sec-title">협업 이력</div>
-        ${rowsOf(r.email).map(h=>`
-          <div style="border-left:2px solid ${h.rowIndex===r.rowIndex?'var(--blue)':'var(--line2)'};padding:7px 10px;margin-bottom:6px;border-radius:0 6px 6px 0;background:${h.rowIndex===r.rowIndex?'var(--blue-l)':'var(--paper2)'};font-size:12px;cursor:pointer;" onclick="openRowDetail(${h.rowIndex})">
-            <div style="display:flex;align-items:center;gap:8px;">${sbadge(h.status)}<strong>${h.cycle||'차수 없음'}</strong><span style="font-family:monospace;font-size:11px;">${feeStr(h.proposeFee)}</span></div>
-          </div>`).join('')}
-      </div>`,
+  const blBtn = r.black === 'Y'
+    ? `<button class="btn-red" onclick="doRemoveBL('${r.email}')">블랙 해제</button>`
+    : `<button class="btn-red" onclick="openBLFromRow(${r.rowIndex})">블랙 지정</button>`;
 
-    collab: `
-      <div class="sp-rd-section">
-        <div class="sp-rd-sec-title">협업 정보</div>
-        <div class="sp-rd-2col">
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">차수</span>
-            <input class="sp-rd-input" id="rd-cycle" value="${r.cycle||''}">
-          </div>
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">진행상태</span>
-            <select class="sp-rd-select" id="rd-status">
-              ${STATUSES.map(s=>`<option${s===r.status?' selected':''}>${s}</option>`).join('')}
-            </select>
-          </div>
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">제안금액</span>
-            <select class="sp-rd-select" id="rd-fee">
-              <option value="">—</option>
-              ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.proposeFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
-            </select>
-          </div>
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">가이드 ID</span>
-            <input class="sp-rd-input" id="rd-guide" value="${r.guideId||''}">
-          </div>
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">가이드 발송일</span>
-            <input class="sp-rd-input" type="date" id="rd-gsent" value="${r.guideSent||''}">
-          </div>
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">포스팅 마감일</span>
-            <input class="sp-rd-input" type="date" id="rd-deadline" value="${r.deadline||''}">
-          </div>
-        </div>
-      </div>
-      ${r.guideId ? `<div class="sp-rd-section">
-        <div class="sp-rd-sec-title">담당 가이드 키워드</div>
-        ${kwHtml || '<div style="color:var(--ink4);font-size:12px;">가이드 정보 없음</div>'}
-      </div>` : ''}`,
-
-    post: `
-      <div class="sp-rd-section">
-        <div class="sp-rd-sec-title">포스팅 정보</div>
-        <div class="sp-rd-field">
-          <span class="sp-rd-label">포스팅 URL</span>
-          <input class="sp-rd-input" id="rd-purl" value="${r.postUrl||''}" placeholder="https://blog.naver.com/...">
-        </div>
-        <div class="sp-rd-field">
-          <span class="sp-rd-label">포스팅 제목</span>
-          <input class="sp-rd-input" id="rd-ptitle" value="${r.postTitle||''}" placeholder="포스팅 제목">
-        </div>
-      </div>
-      <div class="sp-rd-section">
-        <div class="sp-rd-sec-title">발송 정보</div>
-        <div class="sp-rd-2col">
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">실명 (입금자명)</span>
-            <input class="sp-rd-input" id="rd-name" value="${r.realName||''}" placeholder="홍길동">
-          </div>
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">연락처</span>
-            <input class="sp-rd-input" id="rd-phone" value="${r.phone||''}" placeholder="010-0000-0000">
-          </div>
-        </div>
-        <div class="sp-rd-field">
-          <span class="sp-rd-label">확정금액</span>
-          <select class="sp-rd-select" id="rd-cfee">
-            <option value="">—</option>
-            ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.confirmFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
-          </select>
-        </div>
-        <div class="sp-rd-2col">
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">상품권 발송 여부</span>
-            <div>${r.sent==='Y'?'<span style="color:var(--green);font-weight:600;">✓ 발송완료</span>':'<span style="color:var(--ink4);">미발송</span>'}</div>
-          </div>
-          <div class="sp-rd-field">
-            <span class="sp-rd-label">발송일</span>
-            <div>${r.sentDate||'—'}</div>
-          </div>
-        </div>
-      </div>`
-  };
+  const secTitle = (label) =>
+    `<div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.6px;margin:18px 0 10px;display:flex;align-items:center;gap:6px;">${label}<span style="flex:1;height:1px;background:var(--line);display:block;"></span></div>`;
 
   document.getElementById('sp-title').textContent = r.nick;
   document.getElementById('sp-body').innerHTML = `
-    <div style="background:var(--ink);padding:12px 18px 0;">
-      ${pbadge(r.platform||'네이버 블로그')}
-      <div style="color:#F1F5F9;font-size:15px;font-weight:700;margin-top:6px;">${r.nick}</div>
-      <div style="color:#64748B;font-size:11px;margin-top:2px;margin-bottom:12px;">${r.email} · ${r.cycle||'차수 없음'}</div>
-      <!-- 진행 단계 바 -->
-      <div style="display:flex;gap:3px;margin-bottom:6px;">${STATUS_STEPS.map((s,i)=>{
-        const bg = i<stepIdx?'background:var(--green)':i===stepIdx?'background:var(--blue)':'background:#334155';
-        return `<div style="flex:1;height:4px;border-radius:2px;${bg};"></div>`;
-      }).join('')}</div>
-      <div style="display:flex;gap:3px;padding-bottom:12px;">${STATUS_STEPS.map((s,i)=>{
-        const color = i<stepIdx?'#34D399':i===stepIdx?'#93C5FD':'#475569';
-        const weight = i===stepIdx?'700':'400';
-        return `<div style="flex:1;font-size:8px;color:${color};font-weight:${weight};text-align:center;white-space:nowrap;overflow:hidden;">${s}</div>`;
-      }).join('')}</div>
+
+    <!-- ① 헤더 바 -->
+    <div style="background:var(--ink);padding:14px 20px 12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        ${pbadge(r.platform||'네이버 블로그')}
+        ${r.black==='Y'?'<span class="badge b-bl" style="font-size:10px;">블랙리스트</span>':''}
+      </div>
+      <div style="color:#F1F5F9;font-size:16px;font-weight:700;">${r.nick}</div>
+      <div style="color:#64748B;font-size:11px;margin-top:3px;">${r.email}</div>
+      <!-- 진행 바 -->
+      <div style="margin-top:12px;">
+        <div style="display:flex;gap:3px;margin-bottom:4px;">${STATUS_STEPS.map((s,i)=>{
+          const bg = i<stepIdx?'background:#34D399':i===stepIdx?'background:var(--blue)':'background:#334155';
+          return `<div style="flex:1;height:4px;border-radius:2px;${bg};"></div>`;
+        }).join('')}</div>
+        <div style="display:flex;gap:3px;">${STATUS_STEPS.map((s,i)=>{
+          const color = i<stepIdx?'#34D399':i===stepIdx?'#93C5FD':'#475569';
+          return `<div style="flex:1;font-size:8px;color:${color};font-weight:${i===stepIdx?700:400};text-align:center;white-space:nowrap;overflow:hidden;">${s}</div>`;
+        }).join('')}</div>
+      </div>
     </div>
 
-    <!-- 탭 -->
-    <div style="display:flex;border-bottom:1px solid var(--line);background:var(--paper2);">
-      <button class="sp-rd-tab${_spTab==='base'?' on':''}" onclick="spSwitchTab('base',${r.rowIndex})">👤 기본정보</button>
-      <button class="sp-rd-tab${_spTab==='collab'?' on':''}" onclick="spSwitchTab('collab',${r.rowIndex})">📋 협업</button>
-      <button class="sp-rd-tab${_spTab==='post'?' on':''}" onclick="spSwitchTab('post',${r.rowIndex})">📦 포스팅·발송</button>
-    </div>
+    <!-- 본문 스크롤 영역 -->
+    <div style="padding:16px 20px;overflow-y:auto;">
 
-    <!-- 탭 콘텐츠 -->
-    <div id="sp-tab-content" style="overflow-y:auto;flex:1;">${tabs[_spTab]}</div>
+      <!-- ② 기본 정보 -->
+      ${secTitle('기본 정보')}
+      <div class="sp-rd-2col">
+        <div class="sp-rd-field"><span class="sp-rd-label">카테고리</span><div>${r.category||'—'}</div></div>
+        <div class="sp-rd-field"><span class="sp-rd-label">방문자수</span><div>${r.visitors||'—'}</div></div>
+      </div>
+      <div class="sp-rd-field">
+        <span class="sp-rd-label">블로그 URL</span>
+        ${r.blogUrl?`<a href="${r.blogUrl}" target="_blank" style="font-size:12px;color:var(--blue);">${r.blogUrl}</a>`:'<div style="color:var(--ink4);">—</div>'}
+      </div>
+      ${r.memo?`<div class="sp-rd-field" style="margin-top:8px;"><span class="sp-rd-label">메모</span>
+        <div style="background:#FAFAF7;border:1px solid #E8E4D4;border-radius:6px;padding:8px 10px;font-size:12px;white-space:pre-wrap;">${r.memo}</div></div>`:''}
 
-    <!-- 하단 버튼 -->
-    <div style="padding:12px 18px;border-top:1px solid var(--line);background:var(--paper2);display:flex;gap:8px;position:sticky;bottom:0;">
+      <!-- ③ 협업 정보 (수정 가능) -->
+      ${secTitle('협업 정보')}
+      <div class="sp-rd-2col">
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">차수</span>
+          <input class="sp-rd-input" id="rd-cycle" value="${r.cycle||''}">
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">진행상태</span>
+          <select class="sp-rd-select" id="rd-status">
+            ${STATUSES.map(s=>`<option${s===r.status?' selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">제안금액</span>
+          <select class="sp-rd-select" id="rd-fee">
+            <option value="">—</option>
+            ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.proposeFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
+          </select>
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">가이드 ID</span>
+          <input class="sp-rd-input" id="rd-guide" value="${r.guideId||''}">
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">가이드 발송일</span>
+          <input class="sp-rd-input" type="date" id="rd-gsent" value="${r.guideSent||''}">
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">포스팅 마감일</span>
+          <input class="sp-rd-input" type="date" id="rd-deadline" value="${r.deadline||''}">
+        </div>
+      </div>
+      ${r.guideId ? kwHtml : ''}
+
+      <!-- ④ 포스팅 정보 (수정 가능) -->
+      ${secTitle('포스팅 정보')}
+      <div class="sp-rd-field">
+        <span class="sp-rd-label">포스팅 URL</span>
+        <input class="sp-rd-input" id="rd-purl" value="${r.postUrl||''}" placeholder="https://blog.naver.com/...">
+      </div>
+      <div class="sp-rd-field">
+        <span class="sp-rd-label">포스팅 제목</span>
+        <input class="sp-rd-input" id="rd-ptitle" value="${r.postTitle||''}" placeholder="포스팅 제목">
+      </div>
+
+      <!-- ⑤ 발송 정보 (수정 가능) -->
+      ${secTitle('발송 정보')}
+      <div class="sp-rd-2col">
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">실명 (입금자명)</span>
+          <input class="sp-rd-input" id="rd-name" value="${r.realName||''}" placeholder="홍길동">
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">연락처</span>
+          <input class="sp-rd-input" id="rd-phone" value="${r.phone||''}" placeholder="010-0000-0000">
+        </div>
+      </div>
+      <div class="sp-rd-field">
+        <span class="sp-rd-label">확정금액</span>
+        <select class="sp-rd-select" id="rd-cfee">
+          <option value="">—</option>
+          ${FEES.map(f=>`<option value="${f.replace(/,/g,'')}"${r.confirmFee==f.replace(/,/g,'')?' selected':''}>${f}원</option>`).join('')}
+        </select>
+      </div>
+      <div class="sp-rd-2col" style="margin-top:8px;">
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">상품권 발송 여부</span>
+          <div>${r.sent==='Y'?'<span style="color:var(--green);font-weight:600;">✓ 발송완료</span>':'<span style="color:var(--ink4);">미발송</span>'}</div>
+        </div>
+        <div class="sp-rd-field">
+          <span class="sp-rd-label">발송일</span>
+          <div style="font-size:12px;">${r.sentDate||'—'}</div>
+        </div>
+      </div>
+
+      <!-- ⑥ 협업 이력 -->
+      ${secTitle('전체 협업 이력 ('+allRows.length+'건)')}
+      ${allRows.length ? [...allRows].reverse().map(h=>`
+        <div onclick="openRowDetail(${h.rowIndex})" style="border-left:3px solid ${h.rowIndex===r.rowIndex?'var(--blue)':'var(--line2)'};padding:8px 12px;margin-bottom:6px;border-radius:0 6px 6px 0;background:${h.rowIndex===r.rowIndex?'var(--blue-l)':'var(--paper2)'};font-size:12px;cursor:pointer;transition:background .15s;" onmouseover="this.style.background='var(--blue-l)'" onmouseout="this.style.background='${h.rowIndex===r.rowIndex?'var(--blue-l)':'var(--paper2)'}'">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            ${sbadge(h.status)}
+            <strong>${h.cycle||'차수 없음'}</strong>
+            <span style="font-family:monospace;font-size:11px;color:var(--ink3);">${feeStr(h.proposeFee)}</span>
+            ${h.confirmFee&&h.confirmFee!=h.proposeFee?`<span style="font-size:10px;color:var(--ink3)">→ 확정 ${feeStr(h.confirmFee)}</span>`:''}
+            ${h.guideId?`<span style="font-size:10px;background:var(--purple-l);color:var(--purple);border-radius:3px;padding:1px 6px;">가이드 ${h.guideId}</span>`:''}
+          </div>
+          ${h.deadline?`<div style="font-size:10px;color:var(--ink3);margin-top:3px;">마감: ${h.deadline}</div>`:''}
+          ${h.postUrl?`<div style="font-size:10px;margin-top:3px;"><a href="${h.postUrl}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue);">포스팅 →</a></div>`:''}
+        </div>`).join('')
+      : '<div style="color:var(--ink4);font-size:12px;padding:12px 0;">협업 이력이 없습니다.</div>'}
+
+    </div><!-- /본문 -->
+
+    <!-- 하단 고정 버튼 -->
+    <div style="padding:12px 18px;border-top:1px solid var(--line);background:var(--paper2);display:flex;gap:8px;flex-wrap:wrap;">
       <button class="btn-s" onclick="closePanel()">닫기</button>
-      <button class="btn-p" onclick="saveRowDetailAll(${r.rowIndex})">저장</button>
+      ${blBtn}
+      <button class="btn-p" style="flex:1;" onclick="saveRowDetailAll(${r.rowIndex})">저장</button>
       ${nextBtn}
     </div>`;
 }
 
-function spSwitchTab(tab, rowIndex) {
-  _spTab = tab;
-  const r = _rows.find(x => x.rowIndex === rowIndex);
-  if (!r) return;
-  // 탭 버튼 활성화
-  document.querySelectorAll('.sp-rd-tab').forEach(b => b.classList.remove('on'));
-  event.target.classList.add('on');
-  // 콘텐츠 영역만 다시 렌더
-  _renderRowDetailPanel(r);
-}
+// spSwitchTab은 탭 제거로 더 이상 사용하지 않지만 구형 호출 대비 유지
+function spSwitchTab(tab, rowIndex) { /* deprecated - no-op */ }
 
 function saveRowDetailAll(rowIndex) {
   const data = {};
@@ -1554,7 +1616,7 @@ function saveRowDetailAll(rowIndex) {
 function openGuideForm(rowIndex, newStatus) {
   const r = _rows.find(x=>x.rowIndex===rowIndex);
   document.getElementById('sp-title').textContent = '가이드 발송 정보 입력';
-  document.getElementById('sp-body').innerHTML = `
+  document.getElementById('sp-body').innerHTML = `<div style="padding:20px;">
     <div class="info-box" style="margin-bottom:16px">
       <strong>${r.nick}</strong> — ${r.cycle} 가이드 발송 정보를 입력하세요.
     </div>
@@ -1592,7 +1654,7 @@ function saveGuideForm(rowIndex, newStatus) {
 function openPostForm(rowIndex, newStatus) {
   const r = _rows.find(x=>x.rowIndex===rowIndex);
   document.getElementById('sp-title').textContent = '포스팅 완료 정보 입력';
-  document.getElementById('sp-body').innerHTML = `
+  document.getElementById('sp-body').innerHTML = `<div style="padding:20px;">
     <div class="info-box" style="margin-bottom:16px">
       <strong>${r.nick}</strong> — 포스팅 완료 정보와 상품권 발송 정보를 입력하세요.
     </div>
@@ -1664,7 +1726,7 @@ function openAddFromInf(email) {
 
 function buildAddForm(d, prefillEmail) {
   const em = d ? d.email : (prefillEmail||'');
-  return `
+  return `<div style="padding:20px;">
     <div class="fg">
       <label class="fl">이메일 <span class="req">*</span></label>
       <input class="fc" id="f-email" value="${em}" placeholder="example@naver.com"
@@ -1831,7 +1893,7 @@ function openEditInf(email) {
 }
 
 function buildEditInfForm(inf) {
-  return `
+  return `<div style="padding:20px;">
     <div class="info-box" style="margin-bottom:14px">
       <div style="font-size:11px;color:var(--ink3)">이메일(식별자)은 변경할 수 없습니다.</div>
       <div style="font-size:13px;font-weight:700;margin-top:3px">${inf.email}</div>
@@ -1887,13 +1949,13 @@ function saveEditInf(email) {
   closePanel();
   toast('수정 중...', '');
 
-  apiPost({ action: 'updateRow', rowIndex: -1, data: {...data, email} })
+  apiPost({ action: 'updateInfluencer', data: {...data, email} })
+    // Apps Script: updateInfluencer는 email 기준으로 해당 인플루언서의 모든 행 공통 필드(닉네임, 플랫폼 등)를 업데이트
     .then(() => { toast('수정 완료', 'ok'); loadAll(); })
     .catch(e => { toast('오류: ' + e, 'err'); loadAll(); });
 }
 
 function openEditRow(rowIndex) {
-  _spTab = 'collab';
   openRowDetail(rowIndex);
 }
 
@@ -1982,65 +2044,137 @@ function saveEditRow(rowIndex) {
 
 // ── 렌더: 가이드 목록 ──────────────────────────────
 function renderGuide() {
-  const gb = document.getElementById('guide-cnt');
-  const tb = document.getElementById('guide-body');
-  if (!gb || !tb) return;
-  gb.textContent = `${_guides.length}개`;
+  const cnt  = document.getElementById('guide-cnt');
+  const wrap = document.getElementById('guide-cards');
+  const empty= document.getElementById('guide-empty');
+  if (!wrap) return;
+
+  if (cnt) cnt.textContent = `${_guides.length}개`;
+
   if (!_guides.length) {
-    tb.innerHTML = '<tr class="empty-row"><td colspan="6">등록된 가이드가 없습니다.</td></tr>';
+    wrap.style.display  = 'none';
+    if (empty) empty.style.display = '';
     return;
   }
-  tb.innerHTML = _guides.map(g => {
-    const users = _rows.filter(r => r.guideId === g.id);
-    const userBadges = users.length
-      ? users.map(r => `<span style="display:inline-block;background:var(--blue-l);color:var(--blue);border-radius:4px;padding:1px 7px;font-size:10px;font-weight:600;margin:1px">${r.nick||r.email}</span>`).join(' ')
-      : '<span style="color:var(--ink4);font-size:11px">없음</span>';
-    return `<tr onclick="openGuideDetail('${g.id}')">
-      <td style="font-weight:700;color:var(--purple)">${g.id}</td>
-      <td style="font-size:11px">${g.cycle||'—'}</td>
-      <td>${g.link?`<a href="${g.link}" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue);font-size:11px;font-weight:600">노션 열기 →</a>`:'—'}</td>
-      <td style="font-size:12px">${g.m1||'—'}</td>
-      <td style="font-size:11px;color:var(--ink3)">${g.m2||'—'}</td>
-      <td>${userBadges}</td>
-    </tr>`;
+  wrap.style.display  = 'flex';
+  if (empty) empty.style.display = 'none';
+
+  wrap.innerHTML = _guides.map(g => {
+    const users    = _rows.filter(r => r.guideId === g.id);
+    const mains    = g.m1 ? g.m1.split(',').map(k=>k.trim()).filter(Boolean) : [];
+    const subs     = g.m2 ? g.m2.split(',').map(k=>k.trim()).filter(Boolean) : [];
+    const statusCounts = {};
+    users.forEach(r => { statusCounts[r.status] = (statusCounts[r.status]||0)+1; });
+
+    const kwBadges = [
+      ...mains.map(k=>`<span style="display:inline-block;background:var(--purple-l);color:var(--purple);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600;margin:2px 2px 2px 0;">${k}</span>`),
+      ...subs.map(k=>`<span style="display:inline-block;background:var(--paper3);color:var(--ink2);border-radius:4px;padding:2px 8px;font-size:11px;border:1px solid var(--line2);margin:2px 2px 2px 0;">${k}</span>`)
+    ].join('');
+
+    const userRows = users.map(r => `
+      <div onclick="openRowDetail(${r.rowIndex})" style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:6px;background:var(--paper2);border:1px solid var(--line);margin-bottom:5px;cursor:pointer;transition:background .15s;" onmouseover="this.style.background='var(--blue-l)'" onmouseout="this.style.background='var(--paper2)'">
+        ${pbadge(r.platform||'네이버 블로그')}
+        <strong style="font-size:12px;flex:1;">${r.nick}</strong>
+        ${sbadge(r.status)}
+        <span style="font-size:11px;color:var(--ink3);">${r.cycle||'—'}</span>
+        ${r.deadline?`<span style="font-size:10px;color:var(--amber);">마감 ${r.deadline}</span>`:''}
+      </div>`).join('');
+
+    const statusSummary = Object.entries(statusCounts)
+      .map(([s,c])=>`<span style="font-size:10px;background:var(--paper3);border-radius:3px;padding:1px 6px;margin-right:3px;">${s} ${c}</span>`)
+      .join('');
+
+    return `
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--sh);">
+      <!-- 카드 헤더 (항상 표시) -->
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;"
+           onclick="toggleGuideCard('gc-${g.id}', this)">
+        <!-- 토글 화살표 -->
+        <span id="gc-arrow-${g.id}" style="font-size:12px;color:var(--ink4);transition:transform .2s;display:inline-block;">▶</span>
+        <!-- 가이드 ID -->
+        <span style="font-size:14px;font-weight:700;color:var(--purple);min-width:60px;">${g.id}</span>
+        <!-- 차수 -->
+        <span style="font-size:11px;color:var(--ink3);min-width:80px;">${g.cycle||'—'}</span>
+        <!-- 키워드 미리보기 -->
+        <div style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--ink2);">
+          ${mains.length ? mains.join(', ') : '<span style="color:var(--ink4);">키워드 없음</span>'}
+          ${subs.length ? `<span style="color:var(--ink4);"> / ${subs.join(', ')}</span>` : ''}
+        </div>
+        <!-- 담당자 수 -->
+        <span style="font-size:11px;font-weight:700;background:${users.length?'var(--blue-l)':'var(--paper3)'};color:${users.length?'var(--blue)':'var(--ink4)'};border-radius:20px;padding:2px 10px;white-space:nowrap;">${users.length}명</span>
+        <!-- 노션 링크 -->
+        ${g.link?`<a href="${g.link}" target="_blank" onclick="event.stopPropagation()" style="font-size:11px;font-weight:600;color:var(--blue);white-space:nowrap;padding:4px 10px;border:1px solid var(--blue);border-radius:6px;" onmouseover="this.style.background='var(--blue-l)'" onmouseout="this.style.background=''">노션 →</a>`:''}
+        <!-- 수정 버튼 -->
+        <button class="btn-sm" onclick="event.stopPropagation();openGuideEditPanel('${g.id}')" style="white-space:nowrap;">수정</button>
+      </div>
+
+      <!-- 토글 확장 영역 -->
+      <div id="gc-${g.id}" style="display:none;border-top:1px solid var(--line);">
+        <!-- 키워드 상세 -->
+        <div style="padding:12px 18px;background:var(--paper2);border-bottom:1px solid var(--line);">
+          <div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">키워드</div>
+          <div>${kwBadges || '<span style="color:var(--ink4);font-size:12px;">등록된 키워드 없음</span>'}</div>
+          ${g.m3?`<div style="margin-top:8px;font-size:11px;color:var(--ink3);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:7px 10px;">${g.m3}</div>`:''}
+        </div>
+
+        <!-- 담당 블로거 목록 -->
+        <div style="padding:12px 18px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <span style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;">담당 블로거 (${users.length}명)</span>
+            ${statusSummary}
+          </div>
+          ${users.length ? userRows : '<div style="color:var(--ink4);font-size:12px;padding:8px 0;">담당 블로거가 없습니다.</div>'}
+        </div>
+      </div>
+    </div>`;
   }).join('');
 }
 
+function toggleGuideCard(id, headerEl) {
+  const panel = document.getElementById(id);
+  const gId   = id.replace('gc-', '');
+  const arrow = document.getElementById('gc-arrow-' + gId);
+  if (!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : '';
+  if (arrow) arrow.style.transform = isOpen ? '' : 'rotate(90deg)';
+}
+
 function openGuideDetail(id) {
+  // 가이드 탭에서는 인라인 토글로 대체되었으나, 다른 탭에서 호출될 때를 위한 패널 뷰 유지
   const g = _guides.find(x => x.id === id);
   if (!g) return;
   const users = _rows.filter(r => r.guideId === id);
+  const mains = g.m1 ? g.m1.split(',').map(k=>k.trim()).filter(Boolean) : [];
+  const subs  = g.m2 ? g.m2.split(',').map(k=>k.trim()).filter(Boolean) : [];
   document.getElementById('sp-title').textContent = `가이드 ${id}`;
   document.getElementById('sp-body').innerHTML = `
-    <div class="info-box" style="margin-bottom:16px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-        <span style="font-size:16px;font-weight:700;color:var(--purple)">${g.id}</span>
-        <span style="font-size:12px;color:var(--ink3)">${g.cycle||''}</span>
+    <div style="padding:16px 20px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="font-size:18px;font-weight:700;color:var(--purple);">${g.id}</span>
+        <span style="font-size:12px;color:var(--ink3);">${g.cycle||''}</span>
+        ${g.link?`<a href="${g.link}" target="_blank" class="btn-p" style="display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:5px 12px;text-decoration:none;margin-left:auto;">노션 열기 →</a>`:''}
       </div>
-      ${g.link ? `<a href="${g.link}" target="_blank" class="btn-p" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:7px 14px;text-decoration:none">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M7 1h5v5M5 8L12 1M1 6v6h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        노션 가이드 열기
-      </a>` : '<span style="color:var(--ink4);font-size:12px">노션 링크 없음</span>'}
-    </div>
-    <div class="detail-grid" style="margin-bottom:14px">
-      <div><span>메인 키워드</span><strong>${g.m1||'—'}</strong></div>
-      <div><span>서브 키워드</span>${g.m2||'—'}</div>
-      ${g.m3 ? `<div style="grid-column:1/-1"><span>기타 메모</span>${g.m3}</div>` : ''}
-    </div>
-    <hr class="divider">
-    <div class="sec-title">이 가이드를 사용 중인 블로거 (${users.length}명)</div>
-    ${users.length ? users.map(r => `
-      <div class="hist-item" onclick="openRowDetail(${r.rowIndex})" style="cursor:pointer">
-        <div style="display:flex;align-items:center;gap:8px">
+      <div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">메인 키워드</div>
+      <div style="margin-bottom:12px;">${mains.map(k=>`<span style="display:inline-block;background:var(--purple-l);color:var(--purple);border-radius:4px;padding:3px 8px;font-size:11px;font-weight:600;margin:2px 2px 2px 0;">${k}</span>`).join('')||'—'}</div>
+      <div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">서브 키워드</div>
+      <div style="margin-bottom:14px;">${subs.map(k=>`<span style="display:inline-block;background:var(--paper3);color:var(--ink2);border-radius:4px;padding:3px 8px;font-size:11px;border:1px solid var(--line2);margin:2px 2px 2px 0;">${k}</span>`).join('')||'—'}</div>
+      ${g.m3?`<div style="font-size:12px;color:var(--ink2);background:var(--paper2);border:1px solid var(--line);border-radius:7px;padding:10px 12px;margin-bottom:14px;">${g.m3}</div>`:''}
+      <hr class="divider">
+      <div style="font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">담당 블로거 (${users.length}명)</div>
+      ${users.length ? users.map(r=>`
+        <div onclick="openRowDetail(${r.rowIndex})" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;background:var(--paper2);border:1px solid var(--line);margin-bottom:5px;cursor:pointer;" onmouseover="this.style.background='var(--blue-l)'" onmouseout="this.style.background='var(--paper2)'">
           ${pbadge(r.platform||'네이버 블로그')}
-          <strong>${r.nick}</strong>
+          <strong style="font-size:12px;flex:1;">${r.nick}</strong>
           ${sbadge(r.status)}
-          <span style="font-size:11px;color:var(--ink3)">${r.cycle}</span>
-        </div>
-        ${r.deadline ? `<div style="font-size:11px;color:var(--amber);margin-top:3px">마감: ${r.deadline}</div>` : ''}
-      </div>`).join('') : '<div style="color:var(--ink4);font-size:12px;padding:12px 0">사용 중인 블로거가 없습니다.</div>'}
-    <div class="btn-row">
-      <button class="btn-s" onclick="openGuideEditPanel('${id}')">수정</button>
+          <span style="font-size:11px;color:var(--ink3);">${r.cycle}</span>
+          ${r.deadline?`<span style="font-size:10px;color:var(--amber);">마감 ${r.deadline}</span>`:''}
+        </div>`).join('')
+      : '<div style="color:var(--ink4);font-size:12px;padding:8px 0;">담당 블로거가 없습니다.</div>'}
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn-s" onclick="closePanel()">닫기</button>
+        <button class="btn-p" onclick="closePanel();setTimeout(()=>openGuideEditPanel('${id}'),50)">수정</button>
+      </div>
     </div>`;
   document.getElementById('overlay').classList.add('open');
 }
@@ -2059,7 +2193,7 @@ function openGuideEditPanel(id) {
 }
 
 function buildGuideForm(g) {
-  return `
+  return `<div style="padding:20px;">
     <div class="fg"><label class="fl">차수</label>
       <input class="fc" id="gf-cycle" value="${g?g.cycle:_curCycle||''}" placeholder="예: 2025년 7차">
     </div>
@@ -2094,11 +2228,14 @@ function saveGuide(existingId) {
     m3: document.getElementById('gf-m3').value||'',
     memo: ''
   };
-  apiPost({ action: 'addGuide', data })
+  // 기존 가이드 수정 시 updateGuide, 신규 등록 시 addGuide
+  const action = existingId ? 'updateGuide' : 'addGuide';
+  if (existingId) data.id = existingId;
+  apiPost({ action, data })
     .then(res => {
       btn.disabled=false; btn.textContent='저장';
       closePanel();
-      toast((res&&res.message)||'가이드 저장 완료', 'ok');
+      toast((res&&res.message)||(existingId?'가이드 수정 완료':'가이드 등록 완료'), 'ok');
       loadAll();
     })
     .catch(e => {
