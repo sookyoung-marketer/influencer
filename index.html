@@ -2335,14 +2335,11 @@ function exportShipExcel() {
   const q100 = e100k.length, q50 = e50k.length;
 
   // 발송요청서 시트
-  if (wsReq['I11']) { wsReq['I11'].v = serial; wsReq['I11'].w = mon + '/' + td.getDate() + '/' + String(td.getFullYear()).slice(2); }
-  if (wsReq['C12']) { const v = wsReq['C12'].v.toString().replace(/d+월/, mon + '월'); wsReq['C12'].v = v; wsReq['C12'].w = v; wsReq['C12'].h = v; }
-  if (wsReq['I19']) { wsReq['I19'].v = q100; wsReq['I19'].w = q100 + '건'; }
-  if (wsReq['J19']) { wsReq['J19'].v = q100 * 98000; delete wsReq['J19'].f; wsReq['J19'].w = (q100*98000).toLocaleString() + '원'; }
-  if (wsReq['I20']) { wsReq['I20'].v = q50;  wsReq['I20'].w = q50  + '건'; }
-  if (wsReq['J20']) { wsReq['J20'].v = q50  * 49000; delete wsReq['J20'].f; wsReq['J20'].w = (q50*49000).toLocaleString() + '원'; }
-  if (wsReq['I25']) { wsReq['I25'].v = q100 + q50; delete wsReq['I25'].f; wsReq['I25'].w = (q100+q50) + '건'; }
-  if (wsReq['J25']) { wsReq['J25'].v = q100*98000 + q50*49000; delete wsReq['J25'].f; wsReq['J25'].w = (q100*98000+q50*49000).toLocaleString() + '원'; }
+  if (wsReq['I11']) { wsReq['I11'].v = serial; wsReq['I11'].t = 'n'; wsReq['I11'].w = mon + '/' + td.getDate() + '/' + String(td.getFullYear()).slice(2); }
+  if (wsReq['C12']) { const v = wsReq['C12'].v.toString().replace(/\d+월/, mon + '월'); wsReq['C12'].v = v; wsReq['C12'].w = v; wsReq['C12'].h = v; }
+  // 수량(I19, I20)만 입력 — J19·J20·I25·J25 수식은 건드리지 않음
+  if (wsReq['I19']) { wsReq['I19'].v = q100; wsReq['I19'].t = 'n'; wsReq['I19'].w = String(q100); }
+  if (wsReq['I20']) { wsReq['I20'].v = q50;  wsReq['I20'].t = 'n'; wsReq['I20'].w = String(q50); }
 
   // 발송자 명단 — 기존 삭제 후 재작성
   for (let r = 2; r <= 482; r++) { delete wsMd['A'+r]; delete wsMd['B'+r]; delete wsMd['C'+r]; }
