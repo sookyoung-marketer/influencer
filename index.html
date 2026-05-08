@@ -2295,8 +2295,7 @@ function exportShipCSV() {
       `"${r.status||''}"`,
     ].join(','));
   });
-  const blob = new Blob(['﻿'+lines.join('
-')], {type:'text/csv;charset=utf-8'});
+  const blob = new Blob(['\uFEFF'+lines.join('\n')], {type:'text/csv;charset=utf-8'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href=url; a.download=`발송요청서_${sc==='all'?'전체':sc}_${_today()}.csv`;
